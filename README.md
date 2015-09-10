@@ -1,0 +1,1 @@
+# Medidata.Cloud.Thermometer.RaveCommon
