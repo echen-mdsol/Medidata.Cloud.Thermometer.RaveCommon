@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Medidata.Cloud.Thermometer.RaveCommon")]
+[assembly: AssemblyTitle("Medidata.Cloud.Thermometer.RaveCommon.Specs")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Medidata.Cloud.Thermometer.RaveCommon")]
+[assembly: AssemblyProduct("Medidata.Cloud.Thermometer.RaveCommon.Specs")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("c378953f-dda6-4d17-9722-a67fc36737b7")]
+[assembly: Guid("743b12be-f4ba-4509-a8dc-bd3808387783")]
 
 // Version information for an assembly consists of the following four values:
 //
