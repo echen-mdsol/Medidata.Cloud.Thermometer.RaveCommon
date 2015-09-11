@@ -24,7 +24,7 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests.ExpendoState
         {
             // Arrange
             var identity = _fixture.Create<int>();
-            
+
             // Act
             _sut.GetStorage(identity);
 
