@@ -22,14 +22,6 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests
         }
 
         [TestMethod]
-        public void Ctor_NullStorage_ShouldNotThrowException()
-        {
-            var sut = new ExpendoStateService(null);
-
-            Assert.IsNotNull("No exception thrown");
-        }
-
-        [TestMethod]
         [ExpectedException(typeof (ArgumentNullException))]
         public void ForInstance_NullInstance_ShouldThrowException()
         {
@@ -55,9 +47,13 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests
         [TestMethod]
         public void ForInstance_Return()
         {
+            // Arrage
             var instance = _fixture.Create<object>();
+
+            // Act
             var result = _sut.ForInstance(instance);
 
+            // Assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOfType(result, typeof (ExpendoStateAccessor));
         }
@@ -65,8 +61,10 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests
         [TestMethod]
         public void ForClassGeneric_Return()
         {
+            // Act
             var result = _sut.ForClass<object>();
 
+            // Assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOfType(result, typeof (ExpendoStateAccessor));
         }
@@ -81,10 +79,13 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests
         [TestMethod]
         public void ForClass_Return()
         {
+            // Arrage
             var type = _fixture.Create<Type>();
 
+            // Act
             var result = _sut.ForClass(type);
 
+            // Assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOfType(result, typeof (ExpendoStateAccessor));
         }

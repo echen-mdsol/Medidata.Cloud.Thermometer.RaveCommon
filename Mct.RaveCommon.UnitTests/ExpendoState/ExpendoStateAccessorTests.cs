@@ -62,67 +62,82 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests.ExpendoState
         [ExpectedException(typeof (KeyNotFoundException))]
         public void Get_UnsetName_ShouldThrowException()
         {
+            // Arrange
             var propName = _fixture.Create<string>();
 
+            // Act
             _sut.Get(propName);
         }
 
         [TestMethod]
         public void Exists_UnsetName_ReturnFalse()
         {
+            // Arrange
             var propName = _fixture.Create<string>();
 
+            // Act
             var result = _sut.Exists(propName);
 
+            // Assert
             Assert.IsFalse(result);
         }
 
         [TestMethod]
         public void Exists_SetName_ReturnTrue()
         {
+            // Arrange
             var propName = _fixture.Create<string>();
 
+            // Act
             _sut.Set(propName, _fixture.Create<object>());
             var result = _sut.Exists(propName);
 
+            // Assert
             Assert.IsTrue(result);
         }
 
         [TestMethod]
         public void Remove_UnsetName_ShouldNotThrow()
         {
+            // Arrange
             var propName = _fixture.Create<string>();
             var inexistingProp = _fixture.Create<string>();
             _sut.Set(propName, _fixture.Create<object>());
 
+            // Act
             var result = _sut.Remove(inexistingProp);
 
+            // Assert
             CollectionAssert.AreEquivalent(new[] {propName}, _sut.Keys.ToList());
         }
 
         [TestMethod]
         public void Remove_SetName_ShouldNotThrow()
         {
+            // Arrange
             var propName = _fixture.Create<string>();
             var removingPropName = _fixture.Create<string>();
+
+            // Act and Assert
             _sut.Set(propName, _fixture.Create<object>());
             _sut.Set(removingPropName, _fixture.Create<object>());
             CollectionAssert.AreEquivalent(new[] {propName, removingPropName}, _sut.Keys.ToList());
 
             var result = _sut.Remove(removingPropName);
-
             CollectionAssert.AreEquivalent(new[] {propName}, _sut.Keys.ToList());
         }
 
         [TestMethod]
         public void RemoveAll()
         {
+            // Arrange
             var identity = RuntimeHelpers.GetHashCode(_target);
             var propName1 = _fixture.Create<string>();
             var propValue1 = _fixture.Create<object>();
             var propName2 = _fixture.Create<string>();
             var propValue2 = _fixture.Create<object>();
 
+            // Act and Assert
             _sut.Set(propName1, propValue1)
                 .Set(propName2, propValue2);
 
@@ -136,6 +151,7 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests.ExpendoState
         [TestMethod]
         public void StaticClass_SetMultipleExpendoProperties()
         {
+            // Arrange
             var propName1 = _fixture.Create<string>();
             var propValue1 = _fixture.Create<object>();
             var propName2 = _fixture.Create<string>();
@@ -144,9 +160,11 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests.ExpendoState
             _sut.Set(propName1, propValue1)
                 .Set(propName2, propValue2);
 
+            // Act
             var result1 = _sut.Get(propName1);
             var result2 = _sut.Get(propName2);
 
+            // Assert
             Assert.AreSame(propValue1, result1);
             Assert.AreSame(propValue2, result2);
             CollectionAssert.AreEquivalent(new[] {propName1, propName2}, _sut.Keys.ToList());
@@ -155,10 +173,12 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests.ExpendoState
         [TestMethod]
         public void StaticClass_SetSameExpendoPropertyTwice_ShouldGetLatterOne()
         {
+            // Arrange
             var propName = _fixture.Create<string>();
             var propValueOld = _fixture.Create<object>();
             var propValueNew = _fixture.Create<object>();
 
+            // Act and Assert
             _sut.Set(propName, propValueOld);
             var resultOld = _sut.Get(propName);
             Assert.AreSame(propValueOld, resultOld);
