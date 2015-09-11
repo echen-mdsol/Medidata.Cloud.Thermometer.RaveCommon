@@ -6,24 +6,24 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.ExpendoState
     {
         private readonly IExpendoStateStorage _stateStorage;
 
-        public ExpendoStateService(IExpendoStateStorage stateStorage)
+        public ExpendoStateService(IExpendoStateStorage stateStorage = null)
         {
-            if (stateStorage == null) throw new ArgumentNullException("stateStorage");
-            _stateStorage = stateStorage;
+            _stateStorage = stateStorage ?? new ExpendoStateConcurrentStorage();
         }
 
         public virtual IExpendoStateAccessor ForInstance(object instance)
         {
             if (instance == null) throw new ArgumentNullException("instance");
-            if (instance is Type || instance is string) 
-                throw new NotSupportedException(string.Format("Instance of '{0}' isn't supported", instance.GetType().FullName));
+            if (instance is Type || instance is string)
+                throw new NotSupportedException(string.Format("Instance of '{0}' isn't supported",
+                    instance.GetType().FullName));
 
             return new ExpendoStateAccessor(instance, _stateStorage);
         }
 
         public virtual IExpendoStateAccessor ForClass<T>() where T : class
         {
-            return ForClass(typeof(T));
+            return ForClass(typeof (T));
         }
 
         public IExpendoStateAccessor ForClass(Type type)
