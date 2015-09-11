@@ -63,10 +63,19 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ExpendoState\ExpendoStateAccessorTests.cs" />
+    <Compile Include="ExpendoState\ExpendoStateConcurrentStorageTests.cs" />
+    <Compile Include="ExpendoState\ExpendoStateServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Mct.RaveCommon\Medidata.Cloud.Thermometer.RaveCommon\Medidata.Cloud.Thermometer.RaveCommon.csproj">
+      <Project>{E138FC06-8C13-4272-9C5E-3A750C0B4BE0}</Project>
+      <Name>Medidata.Cloud.Thermometer.RaveCommon</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
