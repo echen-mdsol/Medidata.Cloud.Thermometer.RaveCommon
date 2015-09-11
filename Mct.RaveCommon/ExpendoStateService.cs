@@ -42,18 +42,19 @@ namespace Medidata.Cloud.Thermometer.RaveCommon
         /// <returns>The expendo state accessor.</returns>
         public virtual IExpendoStateAccessor ForClass<T>() where T : class
         {
-            return ForClass(typeof (T));
+            return ForClass(typeof(T));
         }
 
         /// <summary>
         ///     Gets the accessor to operate expendo state for the specified type.
         ///     This is usually used for static classes.
         /// </summary>
-        /// <param name="type">Target type.</param>
+        /// <param name="type">Target type. Must be a class type.</param>
         /// <returns>The expendo state accessor.</returns>
         public IExpendoStateAccessor ForClass(Type type)
         {
             if (type == null) throw new ArgumentNullException("type");
+            if (!type.IsClass) throw new ArgumentException("Must be a class type", "type");
             return new ExpendoStateAccessor(type, _stateStorage);
         }
     }

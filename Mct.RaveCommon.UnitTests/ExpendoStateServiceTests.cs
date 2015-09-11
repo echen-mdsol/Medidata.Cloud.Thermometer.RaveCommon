@@ -1,8 +1,10 @@
 ﻿using System;
+using System.IO;
 using Medidata.Cloud.Thermometer.RaveCommon.ExpendoState;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Ploeh.AutoFixture;
 using Ploeh.AutoFixture.AutoRhinoMock;
+using Rhino.Mocks;
 
 namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests
 {
@@ -74,6 +76,17 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests
         public void ForClass_NullType_ShouldThrowException()
         {
             _sut.ForClass(null);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void ForClass_NonClassType_ShouldThrowException()
+        {
+            // Arrange
+            var type = FileAccess.ReadWrite.GetType();
+
+            // Act
+            _sut.ForClass(type);
         }
 
         [TestMethod]
