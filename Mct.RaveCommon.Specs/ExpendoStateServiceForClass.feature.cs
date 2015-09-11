@@ -9,102 +9,95 @@
 //      the code is regenerated.
 //  </auto-generated>
 // ------------------------------------------------------------------------------
-
 #region Designer generated code
-
-using TechTalk.SpecFlow;
-
 #pragma warning disable
-
 namespace Medidata.Cloud.Thermometer.RaveCommon.Specs
 {
+    using TechTalk.SpecFlow;
+    
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [TechTalk.SpecRun.FeatureAttribute("ExpendoStateServiceForClass",
-        Description = "In order to extend state for static classes\nAs a developer\nI want use ExpendoStat" +
-                      "eService on static classes", SourceFile = "ExpendoStateServiceForClass.feature", SourceLine = 0)]
+    [TechTalk.SpecRun.FeatureAttribute("ExpendoStateServiceForClass", Description="In order to extend state for static classes\nAs a developer\nI want use ExpendoStat" +
+        "eService on static classes", SourceFile="ExpendoStateServiceForClass.feature", SourceLine=0)]
     public partial class ExpendoStateServiceForClassFeature
     {
+        
         private static TechTalk.SpecFlow.ITestRunner testRunner;
-
+        
+#line 1 "ExpendoStateServiceForClass.feature"
+#line hidden
+        
         [TechTalk.SpecRun.FeatureInitialize()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            var featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"),
-                "ExpendoStateServiceForClass",
-                "In order to extend state for static classes\nAs a developer\nI want use ExpendoStat" +
-                "eService on static classes", ProgrammingLanguage.CSharp, ((string[]) (null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ExpendoStateServiceForClass", "In order to extend state for static classes\nAs a developer\nI want use ExpendoStat" +
+                    "eService on static classes", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
-
+        
         [TechTalk.SpecRun.FeatureCleanup()]
         public virtual void FeatureTearDown()
         {
             testRunner.OnFeatureEnd();
             testRunner = null;
         }
-
+        
         public virtual void TestInitialize()
         {
         }
-
+        
         [TechTalk.SpecRun.ScenarioCleanup()]
         public virtual void ScenarioTearDown()
         {
             testRunner.OnScenarioEnd();
         }
-
+        
         public virtual void ScenarioSetup(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioStart(scenarioInfo);
         }
-
+        
         public virtual void ScenarioCleanup()
         {
             testRunner.CollectScenarioErrors();
         }
-
+        
         public virtual void FeatureBackground()
         {
 #line 6
 #line 7
-            testRunner.Given("I have a static class", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "Given ");
+ testRunner.Given("I have a static class", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 8
-            testRunner.And("I have an ExpendoStateService", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
-                "And ");
+ testRunner.And("I have an ExpendoStateService", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
         }
-
-        [TechTalk.SpecRun.ScenarioAttribute("Set state for static class", SourceLine = 9)]
-        public virtual void SetStateForStaticClass()
+        
+        [TechTalk.SpecRun.ScenarioAttribute("Set and get state for static class", SourceLine=9)]
+        public virtual void SetAndGetStateForStaticClass()
         {
-            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Set state for static class", ((string[]) (null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Set and get state for static class", ((string[])(null)));
 #line 10
-            this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 6
-            this.FeatureBackground();
+this.FeatureBackground();
 #line 11
-            testRunner.Given("I set state \"State\" as \"Running\" for the class", ((string) (null)),
-                ((TechTalk.SpecFlow.Table) (null)), "Given ");
+ testRunner.Given("I set state \"State\" as \"Running\" for the class", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 12
-            testRunner.When("I get state \"State\" for the class", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
-                "When ");
+ testRunner.When("I get state \"State\" for the class", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 13
-            testRunner.Then("the result should be \"Running\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
-                "Then ");
+ testRunner.Then("the result should be \"Running\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
-
+        
         [TechTalk.SpecRun.TestRunCleanup()]
         public virtual void TestRunCleanup()
         {
-            TechTalk.SpecFlow.TestRunnerManager.GetTestRunner().OnTestRunEnd();
+TechTalk.SpecFlow.TestRunnerManager.GetTestRunner().OnTestRunEnd();
         }
     }
 }
-
 #pragma warning restore
-
 #endregion
