@@ -3,8 +3,8 @@ This contains several common classes for 5 Rave components (web, rws, reporting,
 
 # Features
 Please refer to below feature files.
-- [ExpendoStateServiceForClass.feature](Medidata.Cloud.Thermometer.RaveCommon.Specs/ExpendoStateServiceForClass.feature)
--  [ExpendoStateServiceForInstance.feature](Medidata.Cloud.Thermometer.RaveCommon.Specs/ExpendoStateServiceForInstance.feature)
+- [ExpendoStateServiceForClass.feature](Mct.RaveCommon.Specs/ExpendoStateServiceForClass.feature)
+-  [ExpendoStateServiceForInstance.feature](Mct.RaveCommon.Specs/ExpendoStateServiceForInstance.feature)
 
 # Classes
 ## `ExpendoStateService`
