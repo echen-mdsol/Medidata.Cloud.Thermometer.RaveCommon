@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Medidata.Cloud.Thermometer.RaveCommon", "Mct.RaveCommon\Medidata.Cloud.Thermometer.RaveCommon\Medidata.Cloud.Thermometer.RaveCommon.csproj", "{E138FC06-8C13-4272-9C5E-3A750C0B4BE0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Medidata.Cloud.Thermometer.RaveCommon", "Mct.RaveCommon\Medidata.Cloud.Thermometer.RaveCommon.csproj", "{E138FC06-8C13-4272-9C5E-3A750C0B4BE0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Medidata.Cloud.Thermometer.RaveCommon.UnitTests", "Mct.RaveCommon.UnitTests\Medidata.Cloud.Thermometer.RaveCommon.UnitTests\Medidata.Cloud.Thermometer.RaveCommon.UnitTests.csproj", "{9092CD77-7626-40CB-8D80-C0387A68C645}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Medidata.Cloud.Thermometer.RaveCommon.UnitTests", "Mct.RaveCommon.UnitTests\Medidata.Cloud.Thermometer.RaveCommon.UnitTests.csproj", "{9092CD77-7626-40CB-8D80-C0387A68C645}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Medidata.Cloud.Thermometer.RaveCommon.Specs", "Mct.RaveCommon.Specs\Medidata.Cloud.Thermometer.RaveCommon.Specs\Medidata.Cloud.Thermometer.RaveCommon.Specs.csproj", "{FB54161E-7C46-4E65-8FC2-32CD1430D970}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Medidata.Cloud.Thermometer.RaveCommon.Specs", "Mct.RaveCommon.Specs\Medidata.Cloud.Thermometer.RaveCommon.Specs.csproj", "{FB54161E-7C46-4E65-8FC2-32CD1430D970}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{24FCD66F-4775-4EF5-8ACD-E37D6520593E}"
 	ProjectSection(SolutionItems) = preProject
