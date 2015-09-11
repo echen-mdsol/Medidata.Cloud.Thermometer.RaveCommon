@@ -74,10 +74,10 @@
   <ItemGroup>
     <Compile Include="ExpendoState\ExpendoStateAccessor.cs" />
     <Compile Include="ExpendoState\ExpendoStateConcurrentStorage.cs" />
-    <Compile Include="ExpendoState\ExpendoStateService.cs" />
-    <Compile Include="ExpendoState\IExpendoStateService.cs" />
-    <Compile Include="ExpendoState\IExpendoStateAccessor.cs" />
-    <Compile Include="ExpendoState\IExpendoStateStorage.cs" />
+    <Compile Include="ExpendoStateService.cs" />
+    <Compile Include="IExpendoStateService.cs" />
+    <Compile Include="IExpendoStateAccessor.cs" />
+    <Compile Include="IExpendoStateStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

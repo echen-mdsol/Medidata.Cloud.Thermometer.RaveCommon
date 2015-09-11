@@ -65,7 +65,7 @@
   <ItemGroup>
     <Compile Include="ExpendoState\ExpendoStateAccessorTests.cs" />
     <Compile Include="ExpendoState\ExpendoStateConcurrentStorageTests.cs" />
-    <Compile Include="ExpendoState\ExpendoStateServiceTests.cs" />
+    <Compile Include="ExpendoStateServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

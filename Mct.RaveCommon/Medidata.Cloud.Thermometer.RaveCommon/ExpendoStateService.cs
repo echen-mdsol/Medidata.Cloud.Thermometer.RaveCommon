@@ -1,6 +1,7 @@
 ﻿using System;
+using Medidata.Cloud.Thermometer.RaveCommon.ExpendoState;
 
-namespace Medidata.Cloud.Thermometer.RaveCommon.ExpendoState
+namespace Medidata.Cloud.Thermometer.RaveCommon
 {
     public class ExpendoStateService : IExpendoStateService
     {

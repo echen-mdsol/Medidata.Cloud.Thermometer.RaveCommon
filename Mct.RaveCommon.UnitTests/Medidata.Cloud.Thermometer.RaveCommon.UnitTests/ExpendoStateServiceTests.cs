@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Ploeh.AutoFixture;
 using Ploeh.AutoFixture.AutoRhinoMock;
 
-namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests.ExpendoState
+namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests
 {
     [TestClass]
     public class ExpendoStateServiceTests
