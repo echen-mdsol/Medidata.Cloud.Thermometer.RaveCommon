@@ -75,6 +75,20 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="..\ExpendoStateServiceSteps.cs">
+      <Link>ExpendoStateServiceSteps.cs</Link>
+    </Compile>
+    <Compile Include="ExpendoStateServiceForClass.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExpendoStateServiceForClass.feature</DependentUpon>
+    </Compile>
+    <Compile Include="ExpendoStateServiceForInstance.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExpendoStateServiceForInstance.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\TheStaticClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -82,11 +96,25 @@
     <None Include="Default.srprofile">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="ExpendoStateServiceForClass.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ExpendoStateServiceForClass.feature.cs</LastGenOutput>
+    </None>
+    <None Include="ExpendoStateServiceForInstance.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ExpendoStateServiceForInstance.feature.cs</LastGenOutput>
+    </None>
     <None Include="packages.config" />
     <None Include="runtests.cmd" />
     <None Include="SpecRunTestProfile.xsd">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Mct.RaveCommon\Medidata.Cloud.Thermometer.RaveCommon\Medidata.Cloud.Thermometer.RaveCommon.csproj">
+      <Project>{E138FC06-8C13-4272-9C5E-3A750C0B4BE0}</Project>
+      <Name>Medidata.Cloud.Thermometer.RaveCommon</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
