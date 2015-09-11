@@ -16,7 +16,7 @@
 # Specify the Version Number to use for the NuGet package. If not specified, the version number of the assembly being packed will be used.
 # NuGet version number guidance: https://docs.nuget.org/docs/reference/versioning and the Semantic Versioning spec: http://semver.org/
 # e.g. "" (use assembly's version), "1.2.3" (stable version), "1.2.3-alpha" (prerelease version).
-$versionNumber = ""
+$versionNumber = "0.0.1"
 
 # Specify any Release Notes for this package. 
 # These will only be included in the package if you have a .nuspec file for the project in the same directory as the project file.
@@ -25,8 +25,8 @@ $releaseNotes = ""
 # Specify a specific Configuration and/or Platform to only create a NuGet package when building the project with this Configuration and/or Platform.
 #	e.g. $configuration = "Release"
 #		 $platform = "AnyCPU"
-$configuration = ""
-$platform = ""
+$configuration = "Release"
+$platform = "AnyCPU"
 
 # Specify any NuGet Pack Properties to pass to MsBuild.
 #	e.g. $packProperties = "TargetFrameworkVersion=v3.5;Optimize=true"
@@ -55,7 +55,7 @@ $appendConfigurationAndPlatformToNuGetPackageFileName = $true
 #------------------------------------------------
 
 # The NuGet gallery to upload to. If not provided, the DefaultPushSource in your NuGet.config file is used (typically nuget.org).
-$sourceToUploadTo = ""
+$sourceToUploadTo = "Medidata"
 
 # The API Key to use to upload the package to the gallery. If not provided and a system-level one does not exist for the specified Source, you will be prompted for it.
 $apiKey = ""
