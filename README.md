@@ -1,7 +1,13 @@
 # Medidata.Cloud.Thermometer.RaveCommon
 This contains several common classes for 5 Rave components (web, rws, reporting, core, and riss) to use the Thermometer.
 
-## About the `ExpendoStateService`
+# Features
+Please refer to below feature files.
+- [ExpendoStateServiceForClass.feature](Medidata.Cloud.Thermometer.RaveCommon.Specs/ExpendoStateServiceForClass.feature)
+-  [ExpendoStateServiceForInstance.feature](Medidata.Cloud.Thermometer.RaveCommon.Specs/ExpendoStateServiceForInstance.feature)
+
+# Classes
+## `ExpendoStateService`
 To diagnose the state of certain services or threads in a Rave component on the fly, we need these services to be able to notify their state changes to the outside state collector. For code legacy issue, we try to avoid polluting Rave codebase as possible. To achieve this, we encourage developers to use `ExpendoStateService` to collect the state information.
 
 ### Inject `ExpendoStateService` as singleton via unity
