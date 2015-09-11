@@ -67,6 +67,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyInfoHandler.cs" />
     <Compile Include="ExpendoState\ExpendoStateAccessor.cs" />
     <Compile Include="ExpendoState\ExpendoStateConcurrentStorage.cs" />
     <Compile Include="ExpendoStateService.cs" />
