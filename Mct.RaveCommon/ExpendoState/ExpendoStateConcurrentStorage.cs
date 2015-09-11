@@ -10,7 +10,7 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.ExpendoState
 
         public IDictionary<string, object> GetStorage(int targetIdentity)
         {
-            return PropDic.AddOrUpdate(targetIdentity, new Dictionary<string, object>(), (k, v) => v);
+            return PropDic.GetOrAdd(targetIdentity, new Dictionary<string, object>());
         }
 
         public void ClearStorage(int targetIdentity)
