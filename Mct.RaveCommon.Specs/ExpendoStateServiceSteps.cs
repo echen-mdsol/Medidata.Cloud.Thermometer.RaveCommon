@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Medidata.Cloud.Thermometer.RaveCommon.ExpendoState;
 using Medidata.Cloud.Thermometer.RaveCommon.Specs.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
@@ -10,10 +9,9 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.Specs
     [Binding]
     public class ExpendoStateServiceSteps
     {
-        private ExpendoStateService _expendoStateService;
         private readonly Dictionary<string, object> _instanceDic = new Dictionary<string, object>();
+        private ExpendoStateService _expendoStateService;
         private object _result;
-        private IExpendoStateAccessor _stateAccessor;
         private Type _staticClassType;
 
         [Given(@"I have a static class")]
@@ -58,6 +56,20 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.Specs
         public void WhenIGetStateForTheClass(string name)
         {
             _result = _expendoStateService.ForClass(_staticClassType).Get(name);
+        }
+
+        [Given(@"I set static state ""(.*)"" as ""(.*)"" for instance ""(.*)""")]
+        public void GivenISetStaticStateAsForInstance(string name, string value, string instanceName)
+        {
+            var instance = _instanceDic[instanceName];
+            _expendoStateService.ForClass(instance.GetType()).Set(name, value);
+        }
+
+        [When(@"I get static state ""(.*)"" for instance ""(.*)""")]
+        public void WhenIGetStaticStateForInstance(string name, string instanceName)
+        {
+            var instance = _instanceDic[instanceName];
+            _result = _expendoStateService.ForClass(instance.GetType()).Get(name);
         }
 
         [Then(@"the result should be ""(.*)""")]

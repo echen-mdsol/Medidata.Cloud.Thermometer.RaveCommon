@@ -86,8 +86,15 @@
       <DependentUpon>ExpendoStateServiceForInstance.feature</DependentUpon>
     </Compile>
     <Compile Include="ExpendoStateServiceSteps.cs" />
+    <Compile Include="Helpers\ReleasableClass.cs" />
     <Compile Include="Helpers\TheStaticClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReleaseExpendoStateWhenGCInstance.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReleaseExpendoStateWhenGCInstance.feature</DependentUpon>
+    </Compile>
+    <Compile Include="ReleaseExpendoStateWhenGCInstanceSteps.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -103,6 +110,10 @@
       <LastGenOutput>ExpendoStateServiceForInstance.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
+    <None Include="ReleaseExpendoStateWhenGCInstance.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ReleaseExpendoStateWhenGCInstance.feature.cs</LastGenOutput>
+    </None>
     <None Include="runtests.cmd" />
     <None Include="SpecRunTestProfile.xsd">
       <SubType>Designer</SubType>
