@@ -5,18 +5,18 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.ExpendoState
 {
     internal class ExpendoStateConcurrentStorage : IExpendoStateStorage
     {
-        internal readonly ConcurrentDictionary<int, Dictionary<string, object>> PropDic =
+        internal readonly ConcurrentDictionary<int, Dictionary<string, object>> AllStorages =
             new ConcurrentDictionary<int, Dictionary<string, object>>();
 
         public IDictionary<string, object> GetStorage(int targetIdentity)
         {
-            return PropDic.GetOrAdd(targetIdentity, new Dictionary<string, object>());
+            return AllStorages.GetOrAdd(targetIdentity, new Dictionary<string, object>());
         }
 
-        public void ClearStorage(int targetIdentity)
+        public void ReleaseStorage(int targetIdentity)
         {
             Dictionary<string, object> propDic;
-            PropDic.TryRemove(targetIdentity, out propDic);
+            AllStorages.TryRemove(targetIdentity, out propDic);
         }
     }
 }

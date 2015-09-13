@@ -4,27 +4,30 @@ using System.Runtime.CompilerServices;
 
 namespace Medidata.Cloud.Thermometer.RaveCommon.ExpendoState
 {
-    internal class ExpendoStateAccessor : IExpendoStateAccessor
+    internal class ExpendoStateAccessor : IExpendoStateReleasableAccessor
     {
-        private readonly IDictionary<string, object> _stateStorage;
+        private readonly IExpendoStateStorage _stateStorageCompany;
+        protected readonly IDictionary<string, object> StateStorage;
+        private int _identity;
 
-        public ExpendoStateAccessor(object target, IExpendoStateStorage stateStorage)
+        public ExpendoStateAccessor(object target, IExpendoStateStorage stateStorageCompany)
         {
             if (target == null) throw new ArgumentNullException("target");
-            if (stateStorage == null) throw new ArgumentNullException("stateStorage");
-            var identity = RuntimeHelpers.GetHashCode(target);
-            _stateStorage = stateStorage.GetStorage(identity);
+            if (stateStorageCompany == null) throw new ArgumentNullException("stateStorageCompany");
+            _identity = RuntimeHelpers.GetHashCode(target);
+            _stateStorageCompany = stateStorageCompany;
+            StateStorage = _stateStorageCompany.GetStorage(_identity);
         }
 
         public virtual IExpendoStateAccessor Set(string name, object value)
         {
-            if (_stateStorage.ContainsKey(name))
+            if (StateStorage.ContainsKey(name))
             {
-                _stateStorage[name] = value;
+                StateStorage[name] = value;
             }
             else
             {
-                _stateStorage.Add(name, value);
+                StateStorage.Add(name, value);
             }
             return this;
         }
@@ -35,29 +38,34 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.ExpendoState
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Expendo property name cannot be empty.", "name");
 
-            return _stateStorage[name];
+            return StateStorage[name];
         }
 
         public virtual IExpendoStateAccessor Remove(string name)
         {
-            _stateStorage.Remove(name);
+            StateStorage.Remove(name);
             return this;
         }
 
         public IExpendoStateAccessor RemoveAll()
         {
-            _stateStorage.Clear();
+            StateStorage.Clear();
             return this;
         }
 
         public virtual bool Exists(string name)
         {
-            return _stateStorage.ContainsKey(name);
+            return StateStorage.ContainsKey(name);
+        }
+
+        public void Release()
+        {
+            _stateStorageCompany.ReleaseStorage(_identity);
         }
 
         public IEnumerable<string> Keys
         {
-            get { return _stateStorage.Keys; }
+            get { return StateStorage.Keys; }
         }
     }
 }

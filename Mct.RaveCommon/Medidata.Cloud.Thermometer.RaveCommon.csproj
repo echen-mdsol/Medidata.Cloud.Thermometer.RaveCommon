@@ -76,6 +76,7 @@
     <Compile Include="IExpendoStateService.cs" />
     <Compile Include="IExpendoStateAccessor.cs" />
     <Compile Include="IExpendoStateStorage.cs" />
+    <Compile Include="IExpendoStateReleasableAccessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
