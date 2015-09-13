@@ -5,6 +5,7 @@ This contains several common classes for 5 Rave components (web, rws, reporting,
 Please refer to below feature files.
 - [ExpendoStateServiceForClass.feature](Mct.RaveCommon.Specs/ExpendoStateServiceForClass.feature)
 -  [ExpendoStateServiceForInstance.feature](Mct.RaveCommon.Specs/ExpendoStateServiceForInstance.feature)
+- [AbandonExpendoStateWhenInstanceIsToBeGarbageCollected.feature](Mct.RaveCommon.Specs/AbandonExpendoStateWhenInstanceIsToBeGarbageCollected.feature)
 
 # Classes
 ## `ExpendoStateService`
@@ -25,16 +26,7 @@ To diagnose the state of certain services or threads in a Rave component on the 
 ```cs
 // Set state
 var stateService = DIContainer.Resolve<IExpendoStateService>();
-stateService.ForClass<StaticClass>().Set("State", "Running");
 
-// Get state
-var value = stateService.ForClass<StaticClass>().Get("State");
-Assert.AreEqual("Running", value);
-```
-Or you can use equivalent non-generic way as below.
-```cs
-// Set state
-var stateService = DIContainer.Resolve<IExpendoStateService>();
 stateService.ForClass(typeof(StaticClass)).Set("State", "Running");
 
 // Get state
@@ -44,15 +36,30 @@ Assert.AreEqual("Running", value);
 
 ### `ExpendoStateService` for instances
 ```cs
-var cat, mouse;
 var stateService = DIContainer.Resolve<IExpendoStateService>();
+
+var cat = new Mammal();
+var mouse = new Mammal();
 
 stateService.ForInstance(cat).Set("Name", "Tom");
 stateService.ForInstance(mouse).Set("Name", "Jerry");
 
 var catName = stateService.ForInstance(cat).Get("Name");
-var mouseName = stateService.ForInstance(mouse).Get("Name");
-
 Assert.AreEqual("Tom", catName);
+
+var mouseName = stateService.ForInstance(mouse).Get("Name");
 Assert.AreEqual("Jerry", mouseName);
+```
+
+#### GC instance's expendo states
+Expendo states are like extra assets for class or instance. Instances might be garbage collected by .NET framework. If the value object of an expendo state is a big object, you should consider making it GC-able so as to save memory.
+
+To make an instance's expendo states garbage collectable, you should call `Abandon()` within the instance's destructor, see below `class Mammal` example. In this way, all expendo state objects of the instance will be handled by the next round GC.
+```cs
+public class Mammal {
+    // ...
+    ~Mammal(){
+        DIContainer.Resolve<IExpendoStateService>().ForInstance(this).Abandon();
+    }
+}
 ```
