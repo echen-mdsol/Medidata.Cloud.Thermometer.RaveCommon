@@ -2,18 +2,18 @@
 <package>
   <metadata>
     <id>Medidata.Cloud.Thermometer.RaveCommon</id>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <title>Medidata.Cloud.Thermometer.RaveCommon</title>
     <authors>jshao@mdsol.com,echen@mdsol.com,chuang@mdsol.com</authors>
     <owners>jshao@mdsol.com,echen@mdsol.com,chuang@mdsol.com</owners>
     <projectUrl>https://github.com/junshao/Medidata.Cloud.Thermometer.RaveCommon</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Common library for Rave to use Thermometer</description>
-    <releaseNotes>Update dependency version.</releaseNotes>
+    <releaseNotes>Expendo state can be handled by GC.</releaseNotes>
     <copyright>Copyright 2015</copyright>
     <tags>Thermometer Rave</tags>
     <dependencies>
-      <dependency id="Medidata.Cloud.Thermometer" version="1.4.6" />
+      <dependency id="Medidata.Cloud.Thermometer" version="1.4.8" />
     </dependencies>
   </metadata>
 </package>
