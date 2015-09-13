@@ -2,19 +2,19 @@
 
 namespace Medidata.Cloud.Thermometer.RaveCommon.Specs.Helpers
 {
-    internal class ReleasableClass
+    internal class ExpendoStateAbandonableClass
     {
         private readonly IExpendoStateService _expendoStateService;
 
-        public ReleasableClass(IExpendoStateService expendoStateService)
+        public ExpendoStateAbandonableClass(IExpendoStateService expendoStateService)
         {
             if (expendoStateService == null) throw new ArgumentNullException("expendoStateService");
             _expendoStateService = expendoStateService;
         }
 
-        ~ReleasableClass()
+        ~ExpendoStateAbandonableClass()
         {
-            _expendoStateService.ForInstance(this).Release();
+            _expendoStateService.ForInstance(this).Abandon();
         }
     }
 }

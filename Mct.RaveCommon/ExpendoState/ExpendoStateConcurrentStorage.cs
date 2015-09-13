@@ -13,7 +13,7 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.ExpendoState
             return AllStorages.GetOrAdd(targetIdentity, new Dictionary<string, object>());
         }
 
-        public void ReleaseStorage(int targetIdentity)
+        public void AbandonStorage(int targetIdentity)
         {
             Dictionary<string, object> propDic;
             AllStorages.TryRemove(targetIdentity, out propDic);

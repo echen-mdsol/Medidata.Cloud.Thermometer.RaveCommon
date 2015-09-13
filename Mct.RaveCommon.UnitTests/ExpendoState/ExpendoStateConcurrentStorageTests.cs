@@ -51,7 +51,7 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests.ExpendoState
         }
 
         [TestMethod]
-        public void ReleaseStorage_ExistingTarget()
+        public void AbandonStorage_ExistingTarget()
         {
             // Arrange
             var identity = _fixture.Create<int>();
@@ -60,12 +60,12 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests.ExpendoState
             _sut.GetStorage(identity);
             Assert.AreEqual(1, _sut.AllStorages.Count);
 
-            _sut.ReleaseStorage(identity);
+            _sut.AbandonStorage(identity);
             Assert.AreEqual(0, _sut.AllStorages.Count);
         }
 
         [TestMethod]
-        public void ReleaseStorage_NonExistingTarget()
+        public void AbandonStorage_NonExistingTarget()
         {
             // Arrange
             var identity = _fixture.Create<int>();
@@ -75,7 +75,7 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests.ExpendoState
             Assert.AreEqual(1, _sut.AllStorages.Count);
 
             var deletingIdentity = _fixture.Create<int>();
-            _sut.ReleaseStorage(deletingIdentity);
+            _sut.AbandonStorage(deletingIdentity);
             Assert.AreEqual(1, _sut.AllStorages.Count);
         }
     }

@@ -18,24 +18,22 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.Specs
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [TechTalk.SpecRun.FeatureAttribute("ReleaseExpendoStateWhenGCInstance", Description="In order to release expendo state of an instance when the instance is to be GCed\n" +
-        "As a developer\nI want release the instance expendo state in its Finalize() metho" +
-        "d", SourceFile="ReleaseExpendoStateWhenGCInstance.feature", SourceLine=0)]
-    public partial class ReleaseExpendoStateWhenGCInstanceFeature
+    [TechTalk.SpecRun.FeatureAttribute("AbandonExpendoStateWhenInstanceIsToBeGarbageCollected", Description="In order to abandon expendo state of an instance when the instance is to be GCed\n" +
+        "As a developer\nI want abandon the instance expendo state in its destructor", SourceFile="AbandonExpendoStateWhenInstanceIsToBeGarbageCollected.feature", SourceLine=0)]
+    public partial class AbandonExpendoStateWhenInstanceIsToBeGarbageCollectedFeature
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "ReleaseExpendoStateWhenGCInstance.feature"
+#line 1 "AbandonExpendoStateWhenInstanceIsToBeGarbageCollected.feature"
 #line hidden
         
         [TechTalk.SpecRun.FeatureInitialize()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ReleaseExpendoStateWhenGCInstance", "In order to release expendo state of an instance when the instance is to be GCed\n" +
-                    "As a developer\nI want release the instance expendo state in its Finalize() metho" +
-                    "d", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "AbandonExpendoStateWhenInstanceIsToBeGarbageCollected", "In order to abandon expendo state of an instance when the instance is to be GCed\n" +
+                    "As a developer\nI want abandon the instance expendo state in its destructor", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -74,16 +72,16 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.Specs
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("GC should release instance\'s expendo state if implemented Finalize()", SourceLine=8)]
-        public virtual void GCShouldReleaseInstanceSExpendoStateIfImplementedFinalize()
+        [TechTalk.SpecRun.ScenarioAttribute("Expendo state should be abandoned if the instance implemented destructor", SourceLine=8)]
+        public virtual void ExpendoStateShouldBeAbandonedIfTheInstanceImplementedDestructor()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("GC should release instance\'s expendo state if implemented Finalize()", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Expendo state should be abandoned if the instance implemented destructor", ((string[])(null)));
 #line 9
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line 10
- testRunner.And("I new an instance of the class that calls release expendo state in Finalize()", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I new an instance of the class that implemented destructor", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 11
  testRunner.When("I set any expendo state for the instance", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 12
@@ -91,29 +89,35 @@ this.FeatureBackground();
 #line 13
  testRunner.When("I execute .NET garbage collection", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 14
- testRunner.Then("the expendo state service should not contain the instance\'s expendo state", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the instance should be garbage collected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 15
+ testRunner.And("the expendo state service should not contain the instance\'s expendo state", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("GC shouldn\'t release instance\'s expendo state if not implemented Finalize()", SourceLine=15)]
-        public virtual void GCShouldnTReleaseInstanceSExpendoStateIfNotImplementedFinalize()
+        [TechTalk.SpecRun.ScenarioAttribute("Expendo state shouldn\'t be abandoned if the instance didn\'t implemente destructor" +
+            "", SourceLine=16)]
+        public virtual void ExpendoStateShouldnTBeAbandonedIfTheInstanceDidnTImplementeDestructor()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("GC shouldn\'t release instance\'s expendo state if not implemented Finalize()", ((string[])(null)));
-#line 16
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Expendo state shouldn\'t be abandoned if the instance didn\'t implemente destructor" +
+                    "", ((string[])(null)));
+#line 17
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 17
- testRunner.And("I new an instance of the class that doens\'t implement Finalize()", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 18
- testRunner.When("I set any expendo state for the instance", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I new an instance of the class that didn\'t implement destructor", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 19
- testRunner.Then("the expendo state service should contain the instance\'s expendo state", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I set any expendo state for the instance", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 20
- testRunner.When("I execute .NET garbage collection", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 21
  testRunner.Then("the expendo state service should contain the instance\'s expendo state", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 21
+ testRunner.When("I execute .NET garbage collection", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 22
+ testRunner.Then("the instance should be garbage collected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 23
+ testRunner.And("the expendo state service should contain the instance\'s expendo state", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

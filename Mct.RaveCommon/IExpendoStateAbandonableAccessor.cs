@@ -3,12 +3,12 @@ namespace Medidata.Cloud.Thermometer.RaveCommon
     /// <summary>
     ///     Expendo state accessor for instance.
     /// </summary>
-    public interface IExpendoStateReleasableAccessor : IExpendoStateAccessor
+    public interface IExpendoStateAbandonableAccessor : IExpendoStateAccessor
     {
         /// <summary>
-        ///     Release from Expendo state service.
+        ///     Abandon expendo state service.
         ///     Usually this should be called in object Finalized method during garbage collected.
         /// </summary>
-        void Release();
+        void Abandon();
     }
 }

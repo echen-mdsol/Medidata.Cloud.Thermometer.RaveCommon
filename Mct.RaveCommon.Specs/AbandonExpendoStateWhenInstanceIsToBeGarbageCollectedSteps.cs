@@ -22,22 +22,21 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.Specs
             _expendoStateService = new ExpendoStateService(_storage);
         }
 
-        [Given(@"I new an instance of the class that calls release expendo state in Finalize\(\)")]
-        public void GivenINewAnInstanceOfTheClassThatCallsReleaseExpendoStateInFinalize()
+        [Given(@"I new an instance of the class that implemented destructor")]
+        public void GivenINewAnInstanceOfTheClassThatImplementedDestructor()
         {
-            var instance = new ReleasableClass(_expendoStateService);
+            var instance = new ExpendoStateAbandonableClass(_expendoStateService);
             _identity = RuntimeHelpers.GetHashCode(instance);
             _weakRefOfInstance = new WeakReference(instance);
         }
 
-        [Given(@"I new an instance of the class that doens't implement Finalize\(\)")]
-        public void GivenINewAnInstanceOfTheClassThatDoensTImplementFinalize()
+        [Given(@"I new an instance of the class that didn't implement destructor")]
+        public void GivenINewAnInstanceOfTheClassThatDidnTImplementDestructor()
         {
             var instance = new object();
             _identity = RuntimeHelpers.GetHashCode(instance);
             _weakRefOfInstance = new WeakReference(instance);
         }
-
 
         [When(@"I set any expendo state for the instance")]
         public void WhenISetAnyExpendoStateForTheInstance()
@@ -50,6 +49,11 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.Specs
         public void WhenIExecute_NETGarbageCollection()
         {
             GC.Collect();
+        }
+
+        [Then(@"the instance should be garbage collected")]
+        public void ThenTheInstanceShouldBeGarbageCollected()
+        {
             Assert.IsNull(_weakRefOfInstance.Target);
         }
 

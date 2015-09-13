@@ -191,16 +191,16 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests.ExpendoState
         }
 
         [TestMethod]
-        public void Release_ShouldReleaseStorage()
+        public void Abandon_ShouldAbandonTheStorage()
         {
             // Arrange
             var targetIdentity = RuntimeHelpers.GetHashCode(_target);
 
             // Act
-            _sut.Release();
+            _sut.Abandon();
 
             // Assert
-            _storage.AssertWasCalled(x => x.ReleaseStorage(targetIdentity));
+            _storage.AssertWasCalled(x => x.AbandonStorage(targetIdentity));
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace Medidata.Cloud.Thermometer.RaveCommon.ExpendoState
 {
-    internal class ExpendoStateAccessor : IExpendoStateReleasableAccessor
+    internal class ExpendoStateAccessor : IExpendoStateAbandonableAccessor
     {
         private readonly IExpendoStateStorage _stateStorageCompany;
         protected readonly IDictionary<string, object> StateStorage;
@@ -58,9 +58,9 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.ExpendoState
             return StateStorage.ContainsKey(name);
         }
 
-        public void Release()
+        public void Abandon()
         {
-            _stateStorageCompany.ReleaseStorage(_identity);
+            _stateStorageCompany.AbandonStorage(_identity);
         }
 
         public IEnumerable<string> Keys

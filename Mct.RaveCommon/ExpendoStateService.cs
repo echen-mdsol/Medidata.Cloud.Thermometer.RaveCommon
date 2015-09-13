@@ -24,7 +24,7 @@ namespace Medidata.Cloud.Thermometer.RaveCommon
         /// </summary>
         /// <param name="instance">Object instance.</param>
         /// <returns>The expendo state accessor.</returns>
-        public virtual IExpendoStateReleasableAccessor ForInstance(object instance)
+        public virtual IExpendoStateAbandonableAccessor ForInstance(object instance)
         {
             if (instance == null) throw new ArgumentNullException("instance");
             if (instance is Type || instance is string)

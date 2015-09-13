@@ -12,7 +12,7 @@ namespace Medidata.Cloud.Thermometer.RaveCommon
         /// </summary>
         /// <param name="instance">Object instance.</param>
         /// <returns>The expendo state accessor.</returns>
-        IExpendoStateReleasableAccessor ForInstance(object instance);
+        IExpendoStateAbandonableAccessor ForInstance(object instance);
 
         /// <summary>
         ///     Gets the accessor to operate expendo state for the specified type.
