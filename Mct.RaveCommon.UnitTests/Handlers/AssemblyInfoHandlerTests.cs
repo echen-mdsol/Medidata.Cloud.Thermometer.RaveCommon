@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Ploeh.AutoFixture;
 using Ploeh.AutoFixture.AutoRhinoMock;
 
-namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests.Hanlders
+namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests.Handlers
 {
     [TestClass]
     public class AssemblyInfoHandlerTests
