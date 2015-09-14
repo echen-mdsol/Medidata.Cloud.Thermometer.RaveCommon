@@ -14,14 +14,23 @@ namespace Medidata.Cloud.Thermometer.RaveCommon
         /// <summary>
         ///     Constructor.
         /// </summary>
+        public ExpendoStateService()
+            : this(new ExpendoStateConcurrentStorage(), new ExpendoStateAccessorFactory())
+        {
+        }
+
+        /// <summary>
+        ///     Constructor.
+        /// </summary>
         /// <param name="stateStorage">An implementation of state storage.</param>
-        public ExpendoStateService(IExpendoStateStorage stateStorage = null)
-            : this(stateStorage ?? new ExpendoStateConcurrentStorage(), new ExpendoStateAccessorFactory())
+        public ExpendoStateService(IExpendoStateStorage stateStorage)
+            : this(stateStorage, new ExpendoStateAccessorFactory())
         {
         }
 
         internal ExpendoStateService(IExpendoStateStorage stateStorage, IExpendoStateAccessorFactory accessorFactory)
         {
+            if (stateStorage == null) throw new ArgumentNullException("stateStorage");
             if (accessorFactory == null) throw new ArgumentNullException("accessorFactory");
             _stateStorage = stateStorage ?? new ExpendoStateConcurrentStorage();
             _accessorFactory = accessorFactory;
