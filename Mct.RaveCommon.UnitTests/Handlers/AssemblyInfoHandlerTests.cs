@@ -1,4 +1,5 @@
-﻿using Medidata.Cloud.Thermometer.RaveCommon.Handlers;
+﻿using System.Collections.Generic;
+using Medidata.Cloud.Thermometer.RaveCommon.Handlers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Ploeh.AutoFixture;
 using Ploeh.AutoFixture.AutoRhinoMock;
@@ -28,6 +29,7 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests.Handlers
 
             //Assert
             Assert.IsNotNull(answer);
+            Assert.IsInstanceOfType(answer, typeof(IDictionary<string, string>));
         }
     }
 }
