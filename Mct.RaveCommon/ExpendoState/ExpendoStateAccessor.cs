@@ -4,30 +4,30 @@ using System.Runtime.CompilerServices;
 
 namespace Medidata.Cloud.Thermometer.RaveCommon.ExpendoState
 {
-    internal class ExpendoStateAccessor : IExpendoStateAbandonableAccessor
+    internal class ExpendoStateAccessor : IExpendoStateAccessor
     {
-        private readonly IExpendoStateStorage _stateStorageCompany;
-        protected readonly IDictionary<string, object> StateStorage;
-        private int _identity;
+        private readonly IDictionary<string, object> _ownerStateStorage;
+        protected readonly object Owner;
+        protected int OwnerIdentity;
 
-        public ExpendoStateAccessor(object target, IExpendoStateStorage stateStorageCompany)
+        public ExpendoStateAccessor(object owner, IExpendoStateStorage allStorages)
         {
-            if (target == null) throw new ArgumentNullException("target");
-            if (stateStorageCompany == null) throw new ArgumentNullException("stateStorageCompany");
-            _identity = RuntimeHelpers.GetHashCode(target);
-            _stateStorageCompany = stateStorageCompany;
-            StateStorage = _stateStorageCompany.GetStorage(_identity);
+            if (owner == null) throw new ArgumentNullException("owner");
+            if (allStorages == null) throw new ArgumentNullException("allStorages");
+            OwnerIdentity = RuntimeHelpers.GetHashCode(owner);
+            Owner = owner;
+            _ownerStateStorage = allStorages.GetStorage(OwnerIdentity);
         }
 
         public virtual IExpendoStateAccessor Set(string name, object value)
         {
-            if (StateStorage.ContainsKey(name))
+            if (_ownerStateStorage.ContainsKey(name))
             {
-                StateStorage[name] = value;
+                _ownerStateStorage[name] = value;
             }
             else
             {
-                StateStorage.Add(name, value);
+                _ownerStateStorage.Add(name, value);
             }
             return this;
         }
@@ -38,34 +38,29 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.ExpendoState
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Expendo property name cannot be empty.", "name");
 
-            return StateStorage[name];
+            return _ownerStateStorage[name];
         }
 
         public virtual IExpendoStateAccessor Remove(string name)
         {
-            StateStorage.Remove(name);
+            _ownerStateStorage.Remove(name);
             return this;
         }
 
         public IExpendoStateAccessor RemoveAll()
         {
-            StateStorage.Clear();
+            _ownerStateStorage.Clear();
             return this;
         }
 
         public virtual bool Exists(string name)
         {
-            return StateStorage.ContainsKey(name);
-        }
-
-        public void Abandon()
-        {
-            _stateStorageCompany.AbandonStorage(_identity);
+            return _ownerStateStorage.ContainsKey(name);
         }
 
         public IEnumerable<string> Keys
         {
-            get { return StateStorage.Keys; }
+            get { return _ownerStateStorage.Keys; }
         }
     }
 }
