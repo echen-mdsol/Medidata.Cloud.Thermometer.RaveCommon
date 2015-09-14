@@ -1,4 +1,4 @@
-﻿namespace Medidata.Cloud.Thermometer.RaveCommon
+﻿namespace Medidata.Cloud.Thermometer.RaveCommon.Handlers
 {
     public class ComponentInfoHandler : ThermometerBaseHandler
     {

@@ -67,12 +67,12 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfoHandler.cs" />
-    <Compile Include="ComponentInfoHandler.cs" />
     <Compile Include="ExpendoState\ExpendoStateAccessor.cs" />
     <Compile Include="ExpendoState\ExpendoStateConcurrentStorage.cs" />
     <Compile Include="ExpendoStateService.cs" />
-    <Compile Include="HardwareInfoHandler.cs" />
+    <Compile Include="Handlers\AssemblyInfoHandler.cs" />
+    <Compile Include="Handlers\ComponentInfoHandler.cs" />
+    <Compile Include="Handlers\HardwareInfoHandler.cs" />
     <Compile Include="IExpendoStateService.cs" />
     <Compile Include="IExpendoStateAccessor.cs" />
     <Compile Include="IExpendoStateStorage.cs" />
