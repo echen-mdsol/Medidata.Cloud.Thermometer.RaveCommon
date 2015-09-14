@@ -15,9 +15,9 @@ namespace Medidata.Cloud.Thermometer.RaveCommon
         IDictionary<string, object> GetStorage(int targetIdentity);
 
         /// <summary>
-        ///     Clear the expendo state storage for the specified identity.
+        ///     Remove the expendo state storage for the specified identity.
         /// </summary>
         /// <param name="targetIdentity">The identity of instance of class.</param>
-        void ClearStorage(int targetIdentity);
+        void AbandonStorage(int targetIdentity);
     }
 }

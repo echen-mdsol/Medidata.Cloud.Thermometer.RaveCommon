@@ -5,6 +5,7 @@ This contains several common classes for 5 Rave components (web, rws, reporting,
 Please refer to below feature files.
 - [ExpendoStateServiceForClass.feature](Mct.RaveCommon.Specs/ExpendoStateServiceForClass.feature)
 -  [ExpendoStateServiceForInstance.feature](Mct.RaveCommon.Specs/ExpendoStateServiceForInstance.feature)
+- [AbandonExpendoStateWhenInstanceIsToBeGarbageCollected.feature](Mct.RaveCommon.Specs/AbandonExpendoStateWhenInstanceIsToBeGarbageCollected.feature)
 
 # Classes
 ## `ExpendoStateService`
@@ -21,38 +22,64 @@ To diagnose the state of certain services or threads in a Rave component on the 
 </register>      
 ```
 
-### `ExpendoStateService` for static classes
+### Static expendo states for static classes
 ```cs
 // Set state
 var stateService = DIContainer.Resolve<IExpendoStateService>();
-stateService.ForClass<StaticClass>().Set("State", "Running");
 
-// Get state
-var value = stateService.ForClass<StaticClass>().Get("State");
-Assert.AreEqual("Running", value);
-```
-Or you can use equivalent non-generic way as below.
-```cs
-// Set state
-var stateService = DIContainer.Resolve<IExpendoStateService>();
 stateService.ForClass(typeof(StaticClass)).Set("State", "Running");
 
 // Get state
 var value = stateService.ForClass(typeof(StaticClass)).Get("State");
-Assert.AreEqual("Running", value);
+// value is "Running"
 ```
 
-### `ExpendoStateService` for instances
+### Static expendo states for instances
+Refer to below sample code to manipulate instances' static expendo states.
 ```cs
-var cat, mouse;
-var stateService = DIContainer.Resolve<IExpendoStateService>();
+var cat = new Mammal();
+var mouse = new Mammal();
+
+stateService.ForInstance(cat).Static.Set("Action", "Sleeping");
+stateService.ForInstance(mouse).Static.Set("Action", "Eating");
+var catDoes = stateService.ForInstance(cat).Static.Get("Action");
+// cat is "Eating"
+var mouseDoes = stateService.ForInstance(cat).Static.Get("Action");
+// mouse is "Eating"
+```
+You can also use `cat.GetType()` or directly `Mammal` class to do the same thing
+```cs
+stateService.ForInstance(cat).Static
+// is equivalent to
+stateService.ForClass(cat.GetType())
+// is equivalent to
+stateService.ForClass<Mammal>()
+```
+
+### Instance expendo states
+```cs
+var cat = new Mammal();
+var mouse = new Mammal();
 
 stateService.ForInstance(cat).Set("Name", "Tom");
 stateService.ForInstance(mouse).Set("Name", "Jerry");
 
 var catName = stateService.ForInstance(cat).Get("Name");
-var mouseName = stateService.ForInstance(mouse).Get("Name");
+// catName is "Tom"
 
-Assert.AreEqual("Tom", catName);
-Assert.AreEqual("Jerry", mouseName);
+var mouseName = stateService.ForInstance(mouse).Get("Name");
+// mouseName is "Jerry"
+```
+
+#### GC instance's expendo states
+Expendo states are like extra assets for instances. An instance might be garbage collected by .NET framework. If the expendo states are required to be cleared up together with their owner instance's death, you should consider making these expendo states GC-able.
+
+To achieve this, you must call `Abandon()` within the instance's destructor. See below sample code for `class Mammal`. In this way, all expendo state objects of the instance will be handled by the next round GC.
+```cs
+public class Mammal {
+    // ...
+    ~Mammal(){
+        DIContainer.Resolve<IExpendoStateService>().ForInstance(this).Abandon();
+    }
+}
 ```

@@ -8,15 +8,32 @@ namespace Medidata.Cloud.Thermometer.RaveCommon
     /// </summary>
     public class ExpendoStateService : IExpendoStateService
     {
+        private readonly IExpendoStateAccessorFactory _accessorFactory;
         private readonly IExpendoStateStorage _stateStorage;
 
         /// <summary>
         ///     Constructor.
         /// </summary>
-        /// <param name="stateStorage">An implementation of state storage.</param>
-        public ExpendoStateService(IExpendoStateStorage stateStorage = null)
+        public ExpendoStateService()
+            : this(new ExpendoStateConcurrentStorage(), new ExpendoStateAccessorFactory())
         {
+        }
+
+        /// <summary>
+        ///     Constructor.
+        /// </summary>
+        /// <param name="stateStorage">An implementation of state storage.</param>
+        public ExpendoStateService(IExpendoStateStorage stateStorage)
+            : this(stateStorage, new ExpendoStateAccessorFactory())
+        {
+        }
+
+        internal ExpendoStateService(IExpendoStateStorage stateStorage, IExpendoStateAccessorFactory accessorFactory)
+        {
+            if (stateStorage == null) throw new ArgumentNullException("stateStorage");
+            if (accessorFactory == null) throw new ArgumentNullException("accessorFactory");
             _stateStorage = stateStorage ?? new ExpendoStateConcurrentStorage();
+            _accessorFactory = accessorFactory;
         }
 
         /// <summary>
@@ -24,38 +41,38 @@ namespace Medidata.Cloud.Thermometer.RaveCommon
         /// </summary>
         /// <param name="instance">Object instance.</param>
         /// <returns>The expendo state accessor.</returns>
-        public virtual IExpendoStateAccessor ForInstance(object instance)
+        public virtual IExpendoStateInstanceAccessor ForInstance(object instance)
         {
             if (instance == null) throw new ArgumentNullException("instance");
             if (instance is Type || instance is string)
                 throw new NotSupportedException(string.Format("Instance of '{0}' isn't supported",
                     instance.GetType().FullName));
 
-            return new ExpendoStateAccessor(instance, _stateStorage);
+            return _accessorFactory.CreateInstanceAccessor(instance, _stateStorage, _accessorFactory);
         }
 
         /// <summary>
         ///     Gets the accessor to operate expendo state for the specified type.
         ///     This is usually used for static territory of non-stataic classes.
         /// </summary>
-        /// <typeparam name="T">Target type.</typeparam>
+        /// <typeparam name="T">owner type.</typeparam>
         /// <returns>The expendo state accessor.</returns>
         public virtual IExpendoStateAccessor ForClass<T>() where T : class
         {
-            return ForClass(typeof(T));
+            return ForClass(typeof (T));
         }
 
         /// <summary>
         ///     Gets the accessor to operate expendo state for the specified type.
         ///     This is usually used for static classes.
         /// </summary>
-        /// <param name="type">Target type. Must be a class type.</param>
+        /// <param name="type">owner type. Must be a class type.</param>
         /// <returns>The expendo state accessor.</returns>
         public IExpendoStateAccessor ForClass(Type type)
         {
             if (type == null) throw new ArgumentNullException("type");
             if (!type.IsClass) throw new ArgumentException("Must be a class type", "type");
-            return new ExpendoStateAccessor(type, _stateStorage);
+            return _accessorFactory.CreateAccessor(type, _stateStorage);
         }
     }
 }

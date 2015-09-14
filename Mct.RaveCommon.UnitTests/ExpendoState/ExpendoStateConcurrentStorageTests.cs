@@ -29,8 +29,8 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests.ExpendoState
             _sut.GetStorage(identity);
 
             // Assert
-            Assert.AreEqual(1, _sut.PropDic.Count);
-            Assert.AreEqual(identity, _sut.PropDic.First().Key);
+            Assert.AreEqual(1, _sut.AllStorages.Count);
+            Assert.AreEqual(identity, _sut.AllStorages.First().Key);
         }
 
         [TestMethod]
@@ -39,44 +39,44 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests.ExpendoState
             // Arrange
             var identity = _fixture.Create<int>();
             _sut.GetStorage(identity);
-            var expectedStorage = _sut.PropDic.First().Value;
+            var expectedStorage = _sut.AllStorages.First().Value;
 
             // Act
             var result = _sut.GetStorage(identity);
 
             // Assert
-            Assert.AreEqual(1, _sut.PropDic.Count);
-            Assert.AreEqual(identity, _sut.PropDic.First().Key);
+            Assert.AreEqual(1, _sut.AllStorages.Count);
+            Assert.AreEqual(identity, _sut.AllStorages.First().Key);
             Assert.AreSame(expectedStorage, result);
         }
 
         [TestMethod]
-        public void ClearStorage_ExistingTarget()
+        public void AbandonStorage_ExistingTarget()
         {
             // Arrange
             var identity = _fixture.Create<int>();
 
             // Act and Assert
             _sut.GetStorage(identity);
-            Assert.AreEqual(1, _sut.PropDic.Count);
+            Assert.AreEqual(1, _sut.AllStorages.Count);
 
-            _sut.ClearStorage(identity);
-            Assert.AreEqual(0, _sut.PropDic.Count);
+            _sut.AbandonStorage(identity);
+            Assert.AreEqual(0, _sut.AllStorages.Count);
         }
 
         [TestMethod]
-        public void ClearStorage_NonExistingTarget()
+        public void AbandonStorage_NonExistingTarget()
         {
             // Arrange
             var identity = _fixture.Create<int>();
 
             // Act and Assert
             _sut.GetStorage(identity);
-            Assert.AreEqual(1, _sut.PropDic.Count);
+            Assert.AreEqual(1, _sut.AllStorages.Count);
 
             var deletingIdentity = _fixture.Create<int>();
-            _sut.ClearStorage(deletingIdentity);
-            Assert.AreEqual(1, _sut.PropDic.Count);
+            _sut.AbandonStorage(deletingIdentity);
+            Assert.AreEqual(1, _sut.AllStorages.Count);
         }
     }
 }

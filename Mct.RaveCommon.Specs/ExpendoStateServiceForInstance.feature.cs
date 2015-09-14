@@ -76,10 +76,10 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.Specs
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Set and get state for different instances", SourceLine=10)]
-        public virtual void SetAndGetStateForDifferentInstances()
+        [TechTalk.SpecRun.ScenarioAttribute("Set and get state for different instances should operate on different states.", SourceLine=10)]
+        public virtual void SetAndGetStateForDifferentInstancesShouldOperateOnDifferentStates_()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Set and get state for different instances", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Set and get state for different instances should operate on different states.", ((string[])(null)));
 #line 11
 this.ScenarioSetup(scenarioInfo);
 #line 6
@@ -95,6 +95,36 @@ this.FeatureBackground();
 #line 16
  testRunner.When("I get state \"State\" for instance \"dog\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 17
+ testRunner.Then("the result should be \"Stopping\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [TechTalk.SpecRun.ScenarioAttribute("Set and get static state for different instances should operate on the same state" +
+            ".", SourceLine=18)]
+        public virtual void SetAndGetStaticStateForDifferentInstancesShouldOperateOnTheSameState_()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Set and get static state for different instances should operate on the same state" +
+                    ".", ((string[])(null)));
+#line 19
+this.ScenarioSetup(scenarioInfo);
+#line 6
+this.FeatureBackground();
+#line 20
+ testRunner.Given("I set static state \"StaticProp\" as \"Running\" for instance \"cat\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 21
+ testRunner.When("I get static state \"StaticProp\" for instance \"cat\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 22
+ testRunner.Then("the result should be \"Running\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 23
+ testRunner.Given("I set static state \"StaticProp\" as \"Stopping\" for instance \"dog\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 24
+ testRunner.When("I get static state \"StaticProp\" for instance \"dog\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 25
+ testRunner.Then("the result should be \"Stopping\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 26
+ testRunner.When("I get static state \"StaticProp\" for instance \"cat\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 27
  testRunner.Then("the result should be \"Stopping\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
