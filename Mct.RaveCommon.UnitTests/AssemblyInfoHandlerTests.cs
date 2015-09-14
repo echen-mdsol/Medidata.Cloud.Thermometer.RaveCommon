@@ -23,7 +23,7 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests
             var question = _fixture.Create<IThermometerQuestion>();
 
             //Act
-            var sut = new AssemblyInfoHandler("/abc");
+            var sut = new AssemblyInfoHandler();
             var answer = sut.Handler(question);
 
             //Assert
