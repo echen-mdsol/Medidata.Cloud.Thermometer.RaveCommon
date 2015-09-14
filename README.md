@@ -22,7 +22,7 @@ To diagnose the state of certain services or threads in a Rave component on the 
 </register>      
 ```
 
-### `ExpendoStateService` for static classes
+### Static expendo states for static classes
 ```cs
 // Set state
 var stateService = DIContainer.Resolve<IExpendoStateService>();
@@ -31,13 +31,33 @@ stateService.ForClass(typeof(StaticClass)).Set("State", "Running");
 
 // Get state
 var value = stateService.ForClass(typeof(StaticClass)).Get("State");
-Assert.AreEqual("Running", value);
+// value is "Running"
 ```
 
-### `ExpendoStateService` for instances
+### Static expendo states for instances
+Refer to below sample code to manipulate instances' static expendo states.
 ```cs
-var stateService = DIContainer.Resolve<IExpendoStateService>();
+var cat = new Mammal();
+var mouse = new Mammal();
 
+stateService.ForInstance(cat).Static.Set("Action", "Sleeping");
+stateService.ForInstance(mouse).Static.Set("Action", "Eating");
+var catDoes = stateService.ForInstance(cat).Static.Get("Action");
+// cat is "Eating"
+var mouseDoes = stateService.ForInstance(cat).Static.Get("Action");
+// mouse is "Eating"
+```
+You can also use `cat.GetType()` or directly `Mammal` class to do the same thing
+```cs
+stateService.ForInstance(cat).Static
+// is equivalent to
+stateService.ForClass(cat.GetType())
+// is equivalent to
+stateService.ForClass<Mammal>()
+```
+
+### Instance expendo states
+```cs
 var cat = new Mammal();
 var mouse = new Mammal();
 
@@ -45,16 +65,16 @@ stateService.ForInstance(cat).Set("Name", "Tom");
 stateService.ForInstance(mouse).Set("Name", "Jerry");
 
 var catName = stateService.ForInstance(cat).Get("Name");
-Assert.AreEqual("Tom", catName);
+// catName is "Tom"
 
 var mouseName = stateService.ForInstance(mouse).Get("Name");
-Assert.AreEqual("Jerry", mouseName);
+// mouseName is "Jerry"
 ```
 
 #### GC instance's expendo states
-Expendo states are like extra assets for class or instance. Instances might be garbage collected by .NET framework. If the value object of an expendo state is a big object, you should consider making it GC-able so as to save memory.
+Expendo states are like extra assets for instances. An instance might be garbage collected by .NET framework. If the expendo states are required to be cleared up together with their owner instance's death, you should consider making these expendo states GC-able.
 
-To make an instance's expendo states garbage collectable, you should call `Abandon()` within the instance's destructor, see below `class Mammal` example. In this way, all expendo state objects of the instance will be handled by the next round GC.
+To achieve this, you must call `Abandon()` within the instance's destructor. See below sample code for `class Mammal`. In this way, all expendo state objects of the instance will be handled by the next round GC.
 ```cs
 public class Mammal {
     // ...
