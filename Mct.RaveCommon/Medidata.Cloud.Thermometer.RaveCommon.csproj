@@ -31,8 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Medidata.Cloud.Thermometer, Version=1.4.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Medidata.Cloud.Thermometer.1.4.6\lib\net40\Medidata.Cloud.Thermometer.dll</HintPath>
+    <Reference Include="Medidata.Cloud.Thermometer, Version=1.4.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Medidata.Cloud.Thermometer.1.4.8\lib\net40\Medidata.Cloud.Thermometer.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Owin, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -68,9 +68,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfoHandler.cs" />
+    <Compile Include="ComponentInfoHandler.cs" />
     <Compile Include="ExpendoState\ExpendoStateAccessor.cs" />
     <Compile Include="ExpendoState\ExpendoStateConcurrentStorage.cs" />
     <Compile Include="ExpendoStateService.cs" />
+    <Compile Include="HardwareInfoHandler.cs" />
     <Compile Include="IExpendoStateService.cs" />
     <Compile Include="IExpendoStateAccessor.cs" />
     <Compile Include="IExpendoStateStorage.cs" />

@@ -5,12 +5,6 @@ namespace Medidata.Cloud.Thermometer.RaveCommon
 {
     public class AssemblyInfoHandler : ThermometerBaseHandler
     {
-        public AssemblyInfoHandler(string route, string name = null)
-            : base(route, name)
-        {
-          
-        }
-
         protected override object HandleQuestion(IThermometerQuestion question)
         {
             var assemblyNames = AppDomain.CurrentDomain.GetAssemblies().Select(a => a.GetName());
