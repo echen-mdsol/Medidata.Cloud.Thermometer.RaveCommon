@@ -99,7 +99,7 @@
     <Compile Include="ExpendoState\ExpendoStateConcurrentStorageTests.cs" />
     <Compile Include="ExpendoStateServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="AssemblyInfoHandlerTests.cs" />
+    <Compile Include="Handlers\AssemblyInfoHandlerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

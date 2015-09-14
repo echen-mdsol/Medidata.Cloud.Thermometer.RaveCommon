@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace Medidata.Cloud.Thermometer.RaveCommon
+namespace Medidata.Cloud.Thermometer.RaveCommon.Handlers
 {
     public class AssemblyInfoHandler : ThermometerBaseHandler
     {
