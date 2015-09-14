@@ -189,18 +189,5 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests.ExpendoState
             Assert.AreSame(propValueNew, resultNew);
             CollectionAssert.AreEquivalent(new[] {propName}, _sut.Keys.ToList());
         }
-
-        [TestMethod]
-        public void Abandon_ShouldAbandonTheStorage()
-        {
-            // Arrange
-            var targetIdentity = RuntimeHelpers.GetHashCode(_target);
-
-            // Act
-            _sut.Abandon();
-
-            // Assert
-            _storage.AssertWasCalled(x => x.AbandonStorage(targetIdentity));
-        }
     }
 }

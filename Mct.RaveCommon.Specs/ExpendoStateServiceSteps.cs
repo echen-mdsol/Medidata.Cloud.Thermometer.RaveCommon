@@ -62,14 +62,14 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.Specs
         public void GivenISetStaticStateAsForInstance(string name, string value, string instanceName)
         {
             var instance = _instanceDic[instanceName];
-            _expendoStateService.ForClass(instance.GetType()).Set(name, value);
+            _expendoStateService.ForInstance(instance).Static.Set(name, value);
         }
 
         [When(@"I get static state ""(.*)"" for instance ""(.*)""")]
         public void WhenIGetStaticStateForInstance(string name, string instanceName)
         {
             var instance = _instanceDic[instanceName];
-            _result = _expendoStateService.ForClass(instance.GetType()).Get(name);
+            _result = _expendoStateService.ForInstance(instance).Static.Get(name);
         }
 
         [Then(@"the result should be ""(.*)""")]
