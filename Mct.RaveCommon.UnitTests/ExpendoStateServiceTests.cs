@@ -13,13 +13,25 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests
         private IFixture _fixture;
         private IExpendoStateStorage _storage;
         private ExpendoStateService _sut;
+        private IExpendoStateAccessorFactory _accessorFactory;
 
         [TestInitialize]
         public void Init()
         {
             _fixture = new Fixture().Customize(new AutoRhinoMockCustomization());
             _storage = _fixture.Create<IExpendoStateStorage>();
+            _accessorFactory = _fixture.Create<IExpendoStateAccessorFactory>();
             _sut = new ExpendoStateService(_storage);
+        }
+
+        [TestMethod]
+        public void Ctor_ParameterLess_ShouldNotThrowException()
+        {
+            // Act
+            _sut = new ExpendoStateService();
+
+            // Assert
+            Assert.IsNotNull("No exception");
         }
 
         [TestMethod]
@@ -27,10 +39,21 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests
         public void Ctor_NullAccessorFactory_ShouldThrowException()
         {
             // Arrange
-            IExpendoStateAccessorFactory accessorFactory = null;
+            _accessorFactory = null;
 
             // Act
-            _sut = new ExpendoStateService(_storage, accessorFactory);
+            _sut = new ExpendoStateService(_storage, _accessorFactory);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Ctor_NullStorage_ShouldThrowException()
+        {
+            // Arrange
+            _storage = null;
+
+            // Act
+            _sut = new ExpendoStateService(_storage, _accessorFactory);
         }
 
         [TestMethod]
