@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 
@@ -7,7 +8,7 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.Handlers
 {
     public class ComponentInfoHandler : ThermometerBaseHandler
     {
-        private readonly List<string> raveComponentNames = new List<string>()
+        private readonly List<string> _raveComponentNames = new List<string>
         {
             "Medidata.Core.Service",
             "Medidata.Rave.Integration.Service",
@@ -16,42 +17,55 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.Handlers
             "RaveCrystalViewer"
         };
 
-        private Assembly GetComponentAssembly()
+        protected virtual List<string> RaveComponentNames
+        {
+            get { return _raveComponentNames; }
+        }
+
+        [ExcludeFromCodeCoverage]
+        protected Assembly GetComponentAssembly()
         {
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
-            foreach (var assembly in assemblies)
-            {
-                if (raveComponentNames.Contains(assembly.GetName().Name))
-                {
-                    return assembly;
-                }
-            }
+            var assembly = assemblies.FirstOrDefault(a => RaveComponentNames.Contains(a.GetName().Name));
 
-            return assemblies.First();
+            return assembly;
         }
 
-        public T GetAssemblyAttribute<T>(Assembly assembly) where T : Attribute
+        [ExcludeFromCodeCoverage]
+        protected string GetAssemblyAttribute<T>(Assembly assembly) where T : Attribute
         {
-            var attributes = assembly.GetCustomAttributes(typeof(T), false);
-            if (attributes.Length == 0)
+            var attributes = assembly.GetCustomAttributes(typeof (T), false);
+            var type = typeof (T);
+            var p = type.GetProperties().FirstOrDefault(pi => pi.Name != "TypeId");
+
+            if (attributes.Length == 0 || p == null)
             {
-                return null;
+                return "";
             }
-            return attributes.OfType<T>().SingleOrDefault();
+
+            var attribute = attributes.OfType<T>().SingleOrDefault();
+
+            return p.GetValue(attribute, null).ToString();
         }
 
         protected override object HandleQuestion(IThermometerQuestion question)
         {
             var componentAssembly = GetComponentAssembly();
+
+            if (componentAssembly == null)
+            {
+                return "Unknown Component";
+            }
+
             var componentAssemblyName = componentAssembly.GetName();
 
             return new
             {
-                product = GetAssemblyAttribute<AssemblyProductAttribute>(componentAssembly).Product,
+                product = GetAssemblyAttribute<AssemblyProductAttribute>(componentAssembly),
                 component = componentAssemblyName.Name,
-                productVersion = GetAssemblyAttribute<AssemblyFileVersionAttribute>(componentAssembly).Version,
-                buildId = GetAssemblyAttribute<AssemblyInformationalVersionAttribute>(componentAssembly).InformationalVersion,
+                productVersion = GetAssemblyAttribute<AssemblyFileVersionAttribute>(componentAssembly),
+                buildId = GetAssemblyAttribute<AssemblyInformationalVersionAttribute>(componentAssembly)
             };
         }
     }
