@@ -73,7 +73,6 @@
     <Compile Include="ExpendoStateService.cs" />
     <Compile Include="Handlers\AssemblyInfoHandler.cs" />
     <Compile Include="Handlers\ComponentInfoHandler.cs" />
-    <Compile Include="Handlers\HardwareInfoHandler.cs" />
     <Compile Include="ExpendoState\ExpendoStateInstanceAccessor.cs" />
     <Compile Include="ExpendoState\IExpendoStateAccessorFactory.cs" />
     <Compile Include="IExpendoStateService.cs" />

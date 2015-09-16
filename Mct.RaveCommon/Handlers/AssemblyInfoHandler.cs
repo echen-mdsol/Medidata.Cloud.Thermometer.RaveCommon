@@ -9,8 +9,8 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.Handlers
         {
             var assemblyNames = AppDomain.CurrentDomain.GetAssemblies().Select(a => a.GetName());
 
-            return assemblyNames.Where(an => an.Name.Contains("Medidata"))
-                .ToDictionary(an => an.Name, an => an.Version.ToString());
+            return assemblyNames.GroupBy(an => an.Name)
+                .ToDictionary(g => g.Key, g => g.First().Version.ToString());
         }
     }
 }

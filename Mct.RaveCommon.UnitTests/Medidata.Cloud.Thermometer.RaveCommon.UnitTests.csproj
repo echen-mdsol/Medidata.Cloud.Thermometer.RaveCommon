@@ -40,6 +40,7 @@
       <HintPath>..\packages\Medidata.Cloud.Thermometer.1.4.8\lib\net40\Medidata.Cloud.Thermometer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.2.1.0\lib\net40\Microsoft.Owin.dll</HintPath>
       <Private>True</Private>
@@ -99,6 +100,7 @@
     <Compile Include="ExpendoState\ExpendoStateConcurrentStorageTests.cs" />
     <Compile Include="ExpendoStateServiceTests.cs" />
     <Compile Include="ExpendoState\ExpendoStateInstanceAccessorTests.cs" />
+    <Compile Include="Handlers\ComponentInfoHandlerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Handlers\AssemblyInfoHandlerTests.cs" />
   </ItemGroup>
