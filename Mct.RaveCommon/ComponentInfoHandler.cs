@@ -11,21 +11,20 @@ namespace Medidata.Cloud.Thermometer.RaveCommon
     /// </summary>
     public class ComponentInfoHandler : ThermometerBaseHandler
     {
-        private readonly List<string> _raveComponentNames = new List<string>
+        public ComponentInfoHandler()
         {
-            "Medidata.Core.Service",
-            "Medidata.Rave.Integration.Service",
-            "Medidata.RaveWebServices.Web",
-            "MedidataRAVE",
-            "RaveCrystalViewer"
-        };
-
-        protected virtual List<string> RaveComponentNames
-        {
-            get { return _raveComponentNames; }
+            RaveComponentNames = new[]
+            {
+                "Medidata.Core.Service",
+                "Medidata.Rave.Integration.Service",
+                "Medidata.RaveWebServices.Web",
+                "MedidataRAVE",
+                "RaveCrystalViewer"
+            };
         }
 
-        [ExcludeFromCodeCoverage]
+        protected internal virtual IEnumerable<string> RaveComponentNames { get; private set; }
+
         protected Assembly GetComponentAssembly()
         {
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
@@ -36,20 +35,12 @@ namespace Medidata.Cloud.Thermometer.RaveCommon
         }
 
         [ExcludeFromCodeCoverage]
-        protected string GetAssemblyAttribute<T>(Assembly assembly) where T : Attribute
+        internal protected string GetAssemblyAttributeFirstPropertyValue<T>(Assembly assembly) where T : Attribute
         {
-            var attributes = assembly.GetCustomAttributes(typeof (T), false);
-            var type = typeof (T);
+            var type = typeof(T);
             var p = type.GetProperties().FirstOrDefault(pi => pi.Name != "TypeId");
-
-            if (attributes.Length == 0 || p == null)
-            {
-                return "";
-            }
-
-            var attribute = attributes.OfType<T>().SingleOrDefault();
-
-            return p.GetValue(attribute, null).ToString();
+            var attribute = assembly.GetCustomAttributes(type, false).OfType<T>().SingleOrDefault();
+            return attribute == null || p == null ? string.Empty : p.GetValue(attribute, null).ToString();
         }
 
         protected override object HandleQuestion(IThermometerQuestion question)
@@ -61,14 +52,12 @@ namespace Medidata.Cloud.Thermometer.RaveCommon
                 return "Unknown Component";
             }
 
-            var componentAssemblyName = componentAssembly.GetName();
-
             return new
             {
-                product = GetAssemblyAttribute<AssemblyProductAttribute>(componentAssembly),
-                component = componentAssemblyName.Name,
-                productVersion = GetAssemblyAttribute<AssemblyFileVersionAttribute>(componentAssembly),
-                buildId = GetAssemblyAttribute<AssemblyInformationalVersionAttribute>(componentAssembly)
+                product = GetAssemblyAttributeFirstPropertyValue<AssemblyProductAttribute>(componentAssembly),
+                component = componentAssembly.GetName().Name,
+                productVersion = GetAssemblyAttributeFirstPropertyValue<AssemblyFileVersionAttribute>(componentAssembly),
+                buildId = GetAssemblyAttributeFirstPropertyValue<AssemblyInformationalVersionAttribute>(componentAssembly)
             };
         }
     }
