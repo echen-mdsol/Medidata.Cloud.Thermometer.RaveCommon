@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Medidata.Cloud.Thermometer.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Medidata.Cloud.Thermometer.RaveCommon.UnitTests", "Mct.RaveCommon.UnitTests\Medidata.Cloud.Thermometer.RaveCommon.UnitTests.csproj", "{9092CD77-7626-40CB-8D80-C0387A68C645}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Medidata.Cloud.Thermometer.RaveCommon.Specs", "Mct.RaveCommon.Specs\Medidata.Cloud.Thermometer.RaveCommon.Specs.csproj", "{FB54161E-7C46-4E65-8FC2-32CD1430D970}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{24FCD66F-4775-4EF5-8ACD-E37D6520593E}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\packages.config = .nuget\packages.config
@@ -28,10 +26,6 @@ Global
 		{9092CD77-7626-40CB-8D80-C0387A68C645}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9092CD77-7626-40CB-8D80-C0387A68C645}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9092CD77-7626-40CB-8D80-C0387A68C645}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FB54161E-7C46-4E65-8FC2-32CD1430D970}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FB54161E-7C46-4E65-8FC2-32CD1430D970}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FB54161E-7C46-4E65-8FC2-32CD1430D970}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FB54161E-7C46-4E65-8FC2-32CD1430D970}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
