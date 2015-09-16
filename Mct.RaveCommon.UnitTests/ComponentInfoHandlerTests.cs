@@ -1,14 +1,11 @@
-﻿using System;
-using System.Dynamic;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
-using Medidata.Cloud.Thermometer.RaveCommon.Handlers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Ploeh.AutoFixture;
 using Ploeh.AutoFixture.AutoRhinoMock;
 using Rhino.Mocks;
 
-namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests.Handlers
+namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests
 {
     [TestClass]
     public class ComponentInfoHandlerTests : ComponentInfoHandler
@@ -29,14 +26,14 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests.Handlers
             var question = _fixture.Create<IThermometerQuestion>();
             var sut = MockRepository.GeneratePartialMock<ComponentInfoHandlerTests>();
             sut.Stub(s => s.RaveComponentNames)
-                .Return(new List<string> { assemblyName });
+                .Return(new List<string> {assemblyName});
 
             // Act
             dynamic answer = sut.Handler(question);
 
             // Assert
-            Assert.IsNotNull((object)answer);
-            Assert.AreEqual((string)answer.component, assemblyName);
+            Assert.IsNotNull((object) answer);
+            Assert.AreEqual((string) answer.component, assemblyName);
         }
 
         [TestMethod]

@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Medidata.Cloud.StateBroker, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Medidata.Cloud.StateBroker.0.1.0\lib\net40\Medidata.Cloud.StateBroker.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Medidata.Cloud.Thermometer, Version=1.4.8.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Medidata.Cloud.Thermometer.1.4.8\lib\net40\Medidata.Cloud.Thermometer.dll</HintPath>
       <Private>True</Private>
@@ -67,9 +71,10 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Handlers\AssemblyInfoHandler.cs" />
-    <Compile Include="Handlers\ComponentInfoHandler.cs" />
+    <Compile Include="AssemblyInfoHandler.cs" />
+    <Compile Include="ComponentInfoHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StateServiceBaseHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Medidata.Cloud.Thermometer.RaveCommon.nuspec" />

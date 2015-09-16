@@ -4,8 +4,11 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 
-namespace Medidata.Cloud.Thermometer.RaveCommon.Handlers
+namespace Medidata.Cloud.Thermometer.RaveCommon
 {
+    /// <summary>
+    ///     Hanlder that returns the component information.
+    /// </summary>
     public class ComponentInfoHandler : ThermometerBaseHandler
     {
         private readonly List<string> _raveComponentNames = new List<string>

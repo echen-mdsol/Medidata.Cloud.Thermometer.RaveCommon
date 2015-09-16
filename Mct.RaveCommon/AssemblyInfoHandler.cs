@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Linq;
 
-namespace Medidata.Cloud.Thermometer.RaveCommon.Handlers
+namespace Medidata.Cloud.Thermometer.RaveCommon
 {
+    /// <summary>
+    ///     Hanlder that returns all assembly version information.
+    /// </summary>
     public class AssemblyInfoHandler : ThermometerBaseHandler
     {
         protected override object HandleQuestion(IThermometerQuestion question)
