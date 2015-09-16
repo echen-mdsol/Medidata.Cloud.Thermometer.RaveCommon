@@ -67,18 +67,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExpendoState\ExpendoStateAccessor.cs" />
-    <Compile Include="ExpendoState\ExpendoStateAccessorFactory.cs" />
-    <Compile Include="ExpendoState\ExpendoStateConcurrentStorage.cs" />
-    <Compile Include="ExpendoStateService.cs" />
     <Compile Include="Handlers\AssemblyInfoHandler.cs" />
     <Compile Include="Handlers\ComponentInfoHandler.cs" />
-    <Compile Include="ExpendoState\ExpendoStateInstanceAccessor.cs" />
-    <Compile Include="ExpendoState\IExpendoStateAccessorFactory.cs" />
-    <Compile Include="IExpendoStateService.cs" />
-    <Compile Include="IExpendoStateAccessor.cs" />
-    <Compile Include="IExpendoStateStorage.cs" />
-    <Compile Include="IExpendoStateInstanceAccessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
