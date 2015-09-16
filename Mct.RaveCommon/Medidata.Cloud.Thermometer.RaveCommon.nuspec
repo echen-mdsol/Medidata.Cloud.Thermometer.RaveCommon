@@ -13,7 +13,7 @@
     <copyright>Copyright 2015</copyright>
     <tags>Thermometer Rave</tags>
     <dependencies>
-      <dependency id="Medidata.Cloud.Thermometer" version="1.4.8" />
+      <dependency id="Medidata.Cloud.Thermometer" version="1.5.0" />
       <dependency id="Medidata.Cloud.StateBroker" version="0.1.0" />
     </dependencies>
   </metadata>
