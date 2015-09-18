@@ -60,11 +60,20 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfoHandler.cs" />
     <Compile Include="ComponentInfoHandler.cs" />
+    <Compile Include="DBInfoHandler.cs" />
+    <Compile Include="DBInfo\Caching.cs" />
+    <Compile Include="DBInfo\ConnectionSetting.cs" />
+    <Compile Include="DBInfo\ConnectionSettings.cs" />
+    <Compile Include="DBInfo\DataSettings.cs" />
+    <Compile Include="DBInfo\DefaultHint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StateServiceBaseHandler.cs" />
   </ItemGroup>
