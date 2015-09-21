@@ -48,6 +48,39 @@ Gets component database connection information.
 ##### Sample answer (response):
 ```json
 {
-    // Pending
+   "CachingTimeOut": 10,
+   "DefaultHint": "RaveDev",
+   "ConnectionSettings": [
+      {
+         "DataSourceHint": "RaveDev",
+         "ServerName": "WIN81",
+         "DatabaseName": "RaveDev",
+         "ProviderType": "SqlClient",
+         "MaxPoolSize": 100,
+         "MultipleActiveResultSets": false,
+         "ConnectionTimeOut": 600,
+         "CanConnect": "Yes"
+      },
+      {
+         "DataSourceHint": "RaveDev_Reporter",
+         "ServerName": "WIN81",
+         "DatabaseName": "RaveDev",
+         "ProviderType": "SqlClient",
+         "MaxPoolSize": 300,
+         "MultipleActiveResultSets": true,
+         "ConnectionTimeOut": 600,
+         "CanConnect": "Yes"
+      },
+      {
+         "DataSourceHint": "RaveDev_Migration",
+         "ServerName": "WIN81",
+         "DatabaseName": "RaveDev",
+         "ProviderType": "SqlClient",
+         "MaxPoolSize": 300,
+         "MultipleActiveResultSets": true,
+         "ConnectionTimeOut": 3000,
+         "CanConnect": "Yes"
+      }
+   ]
 }
 ```
