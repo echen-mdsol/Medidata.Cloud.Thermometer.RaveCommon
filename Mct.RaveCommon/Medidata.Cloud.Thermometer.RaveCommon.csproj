@@ -66,6 +66,7 @@
     <Compile Include="DbInfoHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StateServiceBaseHandler.cs" />
+    <Compile Include="ThermometerConditionalStarter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Medidata.Cloud.Thermometer.RaveCommon.nuspec" />
