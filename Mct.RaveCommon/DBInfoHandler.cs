@@ -1,72 +1,75 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Xml;
+using System.Diagnostics.CodeAnalysis;
+using System.Dynamic;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Medidata.Cloud.Thermometer.RaveCommon
 {
-	public class DBInfoHandler : ThermometerBaseHandler
-	{
-		protected override object HandleQuestion(IThermometerQuestion question)
-		{
-			var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-			var dataSettingSection = config.Sections["DataSettings"];
-			if (dataSettingSection == null)
-			{
-				return new {Error = "DataSettings section could not be found"};
-			}
-			var rawXml = dataSettingSection.SectionInformation.GetRawXml();
-			var xDoc = new XmlDocument();
-			xDoc.LoadXml(rawXml);
-			var timeOut = int.Parse(xDoc.SelectSingleNode("//DataSettings/Caching").Attributes["TimeOut"].Value);
-			var defaultHint = xDoc.SelectSingleNode("//DataSettings/DefaultHint").Attributes["Value"].Value;
-			var connList =
-				xDoc.SelectNodes("//DataSettings/ConnectionSettings/ConnectionSetting")
-					.OfType<XmlNode>()
-					.Select(GenerateConnectionStringObject)
-					.ToList();
-			return new {CachingTimeOut = timeOut, DefaultHint = defaultHint, ConnectionSettings = connList};
-		}
+    public class DbInfoHandler : ThermometerBaseHandler
+    {
+        protected override object HandleQuestion(IThermometerQuestion question)
+        {
+            var dataSettings = GetRaveDataSettingsSectionObject();
+            dynamic expando = ConvertToExpendoObject(dataSettings);
+            var connectionSettings = (IList<object>) expando.ConnectionSettings;
+            foreach (dynamic x in connectionSettings)
+            {
+                x.ConnectionState = GetConnectionState(x.ConnectionString);
+                x.ConnectionString = ConvertConnectionStringToObject(x.ConnectionString);
+            }
 
-		private object GenerateConnectionStringObject(XmlNode node)
-		{
-			var hint = node.Attributes["DataSourceHint"].Value;
-			var connString = node.Attributes["ConnectionString"].Value;
-			var providerType = node.Attributes["ProviderType"].Value;
-			var sb = new SqlConnectionStringBuilder(connString);
-			return new
-			{
-				DataSourceHint = hint,
-				ServerName = sb.DataSource,
-				DatabaseName = sb.InitialCatalog,
-				ProviderType = providerType,
-				sb.MaxPoolSize,
-				sb.MultipleActiveResultSets,
-				ConnectionTimeOut = sb.ConnectTimeout,
-				CanConnect = TryConnectionString(connString)
-			};
-		}
+            return expando;
+        }
 
-		private object TryConnectionString(string connString)
-		{
-			using (var conn = new SqlConnection(connString))
-			{
-				try
-				{
-					conn.Open();
-					if (conn.State == ConnectionState.Open)
-					{
-						return "Yes";
-					}
-					return conn.State.ToString();
-				}
-				catch (Exception e)
-				{
-					return e;
-				}
-			}
-		}
-	}
+        [ExcludeFromCodeCoverage]
+        internal virtual object GetRaveDataSettingsSectionObject()
+        {
+            return ConfigurationManager.GetSection("DataSettings");
+        }
+
+        internal virtual ExpandoObject ConvertToExpendoObject(object target)
+        {
+            var expando = target as ExpandoObject;
+            if (expando != null) return expando;
+            var json = JsonConvert.SerializeObject(target, new StringEnumConverter());
+            expando = JsonConvert.DeserializeObject<ExpandoObject>(json, new ExpandoObjectConverter());
+            return expando;
+        }
+
+        internal virtual ExpandoObject ConvertConnectionStringToObject(string connectionString)
+        {
+            var connectionInfo = new SqlConnectionStringBuilder(connectionString);
+            var obj = ConvertToExpendoObject(connectionInfo);
+            IDictionary<string, object> dic = obj;
+            dic.Remove("Password");
+            dic.Remove("User ID");
+            return obj;
+        }
+
+        internal virtual IDbConnection CreateConnection(string connectionString)
+        {
+            return new SqlConnection(connectionString);
+        }
+
+        internal virtual object GetConnectionState(string connString)
+        {
+            try
+            {
+                using (var conn = CreateConnection(connString))
+                {
+                    conn.Open();
+                    return conn.State;
+                }
+            }
+            catch (Exception e)
+            {
+                return e;
+            }
+        }
+    }
 }
