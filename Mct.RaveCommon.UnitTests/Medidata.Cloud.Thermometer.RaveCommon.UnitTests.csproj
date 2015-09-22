@@ -86,6 +86,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.XML" />
   </ItemGroup>
   <Choose>
@@ -102,7 +103,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ComponentInfoHandlerTests.cs" />
-    <Compile Include="DBInfoHandlerTests.cs" />
+    <Compile Include="DbInfoHandlerTests.cs" />
     <Compile Include="MockHelpers\DatabaseSettingsStub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AssemblyInfoHandlerTests.cs" />
