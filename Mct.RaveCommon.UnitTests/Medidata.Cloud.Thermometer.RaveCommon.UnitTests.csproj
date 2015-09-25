@@ -98,6 +98,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ComponentInfoHandlerTests.cs" />
+    <Compile Include="ConfigurationInfoHandlerTests.cs" />
     <Compile Include="DbInfoHandlerTests.cs" />
     <Compile Include="MockHelpers\DatabaseSettingsStub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
