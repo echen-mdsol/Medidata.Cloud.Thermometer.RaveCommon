@@ -31,7 +31,7 @@ namespace Medidata.Cloud.Thermometer.RaveCommon
 				var connString = (string)conn.ConnectionString;
 			
 				var connection = CreateConnection(connString);
-				return GetConfigurationInfoFromDb(GetDataReaderByConnection(connection));
+				return GetConfigurationInfoFromDb(GetDataReaderByConnection(connString));
 			}
 			catch (Exception e)
 			{
@@ -61,9 +61,9 @@ namespace Medidata.Cloud.Thermometer.RaveCommon
 		}
 
 		[ExcludeFromCodeCoverage]
-		internal virtual IDataReader GetDataReaderByConnection(IDbConnection connection)
+		internal virtual IDataReader GetDataReaderByConnection(string connectionString)
 		{
-			using (SqlConnection sqlConnection = (SqlConnection)connection)
+			using (SqlConnection sqlConnection = new SqlConnection(connectionString))
 			{
 				sqlConnection.Open();
 				using (SqlCommand cmd = new SqlCommand("select Id,Tag,ConfigValue from [dbo].[Configuration]", sqlConnection))
@@ -76,6 +76,10 @@ namespace Medidata.Cloud.Thermometer.RaveCommon
 		internal virtual List<object> GetConfigurationInfoFromDb(IDataReader reader)
 		{
 			var result = new List<object>();
+			if (reader == null)
+			{
+				throw new ArgumentNullException("reader","DataReader should not be null");
+			}
 			while (reader.Read())
 			{
 				result.Add(new {ID = reader["ID"], Tag = reader["Tag"], ConfigValue = reader["ConfigValue"]});

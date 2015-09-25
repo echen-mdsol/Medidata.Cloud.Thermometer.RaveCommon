@@ -18,7 +18,7 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests
 	public class ConfigurationInfoHandlerTests
 	{
 		private IFixture _fixture;
-
+		
 		[TestInitialize]
 		public void Init()
 		{
@@ -50,17 +50,6 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests
 			Assert.AreEqual(expected.list[2], result.list[2]);
 		}
 
-		[TestMethod]
-		public void CreateConnection_ReturnsSqlConnection()
-		{
-			var connectionString = "Server=WIN81;Database=RaveDev;uid=RaveDev;pwd=password*8";
-			var sut = new ConfigurationInfoHandler();
-
-			var result = sut.CreateConnection(connectionString);
-
-			Assert.IsInstanceOfType(result, typeof(SqlConnection));
-		}
-
 
 		[TestMethod]
 		[ExpectedException(typeof(Exception),"Bad DataReader.Read()")]
@@ -76,6 +65,19 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests
 
 			//Assert
 			
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void GetConfigurationInfoFromDb_NullReader()
+		{
+			//Arrange
+			//Act
+			var sut = new ConfigurationInfoHandler();
+			sut.GetConfigurationInfoFromDb(null);
+
+			//Assert
+
 		}
 
 		[TestMethod]
