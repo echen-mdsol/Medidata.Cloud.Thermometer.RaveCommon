@@ -59,7 +59,7 @@ namespace Medidata.Cloud.Thermometer.RaveCommon
             {
                 sqlConnection.Open();
                 var cmd = sqlConnection.CreateCommand();
-                cmd.CommandText = "select Id,Tag,ConfigValue from [dbo].[Configuration]";
+                cmd.CommandText = "select Id,Tag,ConfigValue from [dbo].[Configuration] order by Id";
                 return cmd.ExecuteReader(CommandBehavior.CloseConnection);
             }
             finally
@@ -80,7 +80,7 @@ namespace Medidata.Cloud.Thermometer.RaveCommon
             {
                 while (reader.Read())
                 {
-                    result.Add(new { ID = reader["ID"], Tag = reader["Tag"], ConfigValue = reader["ConfigValue"] });
+                    result.Add(new {Tag = reader["Tag"], Value = reader["ConfigValue"] });
                 }
                 return result;
             }
