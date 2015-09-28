@@ -2,14 +2,14 @@
 <package>
   <metadata>
     <id>Medidata.Cloud.Thermometer.RaveCommon</id>
-    <version>1.3.3</version>
+    <version>1.3.4</version>
     <title>Medidata.Cloud.Thermometer.RaveCommon</title>
     <authors>jshao@mdsol.com,echen@mdsol.com,chuang@mdsol.com</authors>
     <owners>jshao@mdsol.com,echen@mdsol.com,chuang@mdsol.com</owners>
     <projectUrl>https://github.com/junshao/Medidata.Cloud.Thermometer.RaveCommon</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Common library for Rave to use Thermometer</description>
-    <releaseNotes>Add ThermometerConditionalStarter</releaseNotes>
+    <releaseNotes>Fixed a SqlDataReader bug</releaseNotes>
     <copyright>Copyright 2015</copyright>
     <tags>Thermometer Rave</tags>
     <dependencies>

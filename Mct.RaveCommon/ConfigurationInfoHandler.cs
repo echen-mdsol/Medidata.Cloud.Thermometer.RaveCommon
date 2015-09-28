@@ -27,8 +27,6 @@ namespace Medidata.Cloud.Thermometer.RaveCommon
                 var connections = (List<dynamic>) expando.ConnectionSettings;
                 var conn = connections.First(c => c.DataSourceHint == defaultHint);
                 var connString = (string) conn.ConnectionString;
-
-                var connection = CreateConnection(connString);
                 return GetConfigurationInfoFromDb(GetDataReaderByConnection(connString));
             }
             catch (Exception e)
@@ -43,10 +41,6 @@ namespace Medidata.Cloud.Thermometer.RaveCommon
             return ConfigurationManager.GetSection("DataSettings");
         }
 
-        internal virtual IDbConnection CreateConnection(string connectionString)
-        {
-            return new SqlConnection(connectionString);
-        }
 
         internal virtual ExpandoObject ConvertToExpendoObject(object target)
         {
@@ -74,18 +68,23 @@ namespace Medidata.Cloud.Thermometer.RaveCommon
             
         }
 
-        internal virtual List<object> GetConfigurationInfoFromDb(IDataReader reader)
+        internal virtual List<object> GetConfigurationInfoFromDb(IDataReader dataReader)
         {
             var result = new List<object>();
-            if (reader == null)
+            if (dataReader == null)
             {
-                throw new ArgumentNullException("reader", "DataReader should not be null");
+                throw new ArgumentNullException("dataReader", "DataReader should not be null");
             }
-            while (reader.Read())
+            using (IDataReader reader = dataReader)
             {
-                result.Add(new {ID = reader["ID"], Tag = reader["Tag"], ConfigValue = reader["ConfigValue"]});
+                while (reader.Read())
+                {
+                    result.Add(new { ID = reader["ID"], Tag = reader["Tag"], ConfigValue = reader["ConfigValue"] });
+                }
+                return result;
             }
-            return result;
+            
+            
         }
     }
 }
