@@ -59,6 +59,7 @@ namespace Medidata.Cloud.Thermometer.RaveCommon
             {
                 sqlConnection.Open();
                 var cmd = sqlConnection.CreateCommand();
+                cmd.CommandText = "select Id,Tag,ConfigValue from [dbo].[Configuration]";
                 return cmd.ExecuteReader(CommandBehavior.CloseConnection);
             }
             finally
