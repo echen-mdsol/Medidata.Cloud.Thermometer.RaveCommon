@@ -9,7 +9,6 @@
     <projectUrl>https://github.com/junshao/Medidata.Cloud.Thermometer.RaveCommon</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Common library for Rave to use Thermometer</description>
-    <releaseNotes>Upgrade Medidata.Cloud.Thermometer ref to 1.5.3</releaseNotes>
     <releaseNotes>Add ThermometerConditionalStarter</releaseNotes>
     <copyright>Copyright 2015</copyright>
     <tags>Thermometer Rave</tags>
