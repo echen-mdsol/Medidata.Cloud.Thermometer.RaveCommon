@@ -62,9 +62,10 @@ namespace Medidata.Cloud.Thermometer.RaveCommon
                 cmd.CommandText = "select Id,Tag,ConfigValue from [dbo].[Configuration] order by Id";
                 return cmd.ExecuteReader(CommandBehavior.CloseConnection);
             }
-            finally
+            catch
             {
                 sqlConnection.Dispose();
+                throw;
             }
             
         }
