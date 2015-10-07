@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Dynamic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Ploeh.AutoFixture;
 using Ploeh.AutoFixture.AutoRhinoMock;
@@ -13,204 +13,76 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests
     public class ConfigurationInfoHandlerTests
     {
         private IFixture _fixture;
+        private ConfigurationInfoHandler _sut;
 
         [TestInitialize]
         public void Init()
         {
             _fixture = new Fixture().Customize(new AutoRhinoMockCustomization());
+            _sut = MockRepository.GeneratePartialMock<ConfigurationInfoHandler>();
         }
 
         [TestMethod]
-        public void ConvertToExpendoObject_ReturnsSelfIfAlreadyIsExpendo()
+        public void Handler_ReturnsDataTable()
         {
-            var expected = _fixture.Create<ExpandoObject>();
-            var sut = new ConfigurationInfoHandler();
-
-            var result = sut.ConvertToExpendoObject(expected);
-
-            Assert.AreEqual(expected, result);
-        }
-
-        [TestMethod]
-        public void ConvertToExpendoObject_ConvertsObjectToExpendo()
-        {
-            var value = _fixture.Create<string>();
-            var expected = new {x = value, list = new List<int> {0, 1, 2, 3, 4, 5, 6, 7}};
-            var sut = new ConfigurationInfoHandler();
-
-            dynamic result = sut.ConvertToExpendoObject(expected);
-
-            Assert.AreEqual(expected.x, result.x);
-            Assert.AreEqual(expected.list.Count, result.list.Count);
-            Assert.AreEqual(expected.list[2], result.list[2]);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof (Exception), "Bad DataReader.Read()")]
-        public void GetConfigurationInfoFromDb_FailedReader()
-        {
-            //Arrange
-            var dr = MockRepository.GenerateStub<IDataReader>();
-            dr.Stub(x => x.Read()).Throw(new Exception("Bad DataReader.Read()"));
-
-            //Act
-            var sut = new ConfigurationInfoHandler();
-            sut.GetConfigurationInfoFromDb(dr);
-
-            //Assert
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof (ArgumentNullException))]
-        public void GetConfigurationInfoFromDb_NullReader()
-        {
-            //Arrange
-            //Act
-            var sut = new ConfigurationInfoHandler();
-            sut.GetConfigurationInfoFromDb(null);
-
-            //Assert
-        }
-
-        [TestMethod]
-        public void GetConfigurationInfoFromDb_NoRecords()
-        {
-            //Arrange
-            var dr = MockRepository.GenerateStub<IDataReader>();
-            dr.Stub(x => x.Read()).Return(false);
-
-            //Act
-            var sut = new ConfigurationInfoHandler();
-            List<dynamic> result = sut.GetConfigurationInfoFromDb(dr);
-
-            //Assert
-            Assert.AreEqual(0, result.Count);
-        }
-
-        [TestMethod]
-        public void GetConfigurationInfoFromDb_ReturnSomeRecords()
-        {
-            //Arrange
-            var dr = MockRepository.GenerateStub<IDataReader>();
-            dr.Stub(x => x.Read()).Repeat.Twice().Return(true);
-            dr.Stub(x => x.Read()).Return(false);
-            dr.Stub(x => x["ID"]).Repeat.Once().Return(1);
-            dr.Stub(x => x["Tag"]).Repeat.Once().Return("Tag1");
-            dr.Stub(x => x["ConfigValue"]).Repeat.Once().Return("Value1");
-            dr.Stub(x => x["ID"]).Repeat.Once().Return(2);
-            dr.Stub(x => x["Tag"]).Repeat.Once().Return("Tag2");
-            dr.Stub(x => x["ConfigValue"]).Repeat.Once().Return("Value2");
-
-
-            //Act
-            var sut = new ConfigurationInfoHandler();
-            List<dynamic> result = sut.GetConfigurationInfoFromDb(dr);
-
-            //Assert
-            Assert.AreEqual(2, result.Count);
-            Assert.AreEqual(1, result[0].ID);
-            Assert.AreEqual("Tag1", result[0].Tag);
-            Assert.AreEqual("Value1", result[0].ConfigValue);
-            Assert.AreEqual(2, result[1].ID);
-            Assert.AreEqual("Tag2", result[1].Tag);
-            Assert.AreEqual("Value2", result[1].ConfigValue);
-        }
-
-        [TestMethod]
-        public void HandleQuestion_ReturnListOfResult()
-        {
-            //Arrange
+            // Arrange
             var question = _fixture.Create<IThermometerQuestion>();
-            var sut = MockRepository.GeneratePartialMock<ConfigurationInfoHandler>();
+            var connectionString = _fixture.Create<string>();
+            _sut.Stub(x => x.GetConnectionString()).Return(connectionString);
+            var expectedDataTable = new DataTable();
+            var adapter = _fixture.Create<IDbDataAdapter>();
+            adapter.Stub(x => x.Fill(Arg<DataSet>.Is.Anything))
+                .Return(1)
+                .WhenCalled(call =>
+                {
+                    var dataSet = (DataSet) call.Arguments.First();
+                    dataSet.Tables.Add(expectedDataTable);
+                    call.ReturnValue = 1;
+                });
+            _sut.Stub(x => x.CreateDataAdapter(
+                Arg<string>.Is.Anything,
+                Arg<string>.Is.Same(connectionString)))
+                .Return(adapter);
 
-            var raveDataSettingsObject = _fixture.Create<object>();
-            sut.Stub(x => x.GetRaveDataSettingsSectionObject()).Return(raveDataSettingsObject);
+            // Act
+            var result = _sut.Handler(question) as DataTable;
 
-            dynamic connectionSetting1 = new ExpandoObject();
-            connectionSetting1.ConnectionString = _fixture.Create<string>();
-            connectionSetting1.DataSourceHint = "RaveDB";
-            dynamic connectionSetting2 = new ExpandoObject();
-            connectionSetting2.ConnectionString = _fixture.Create<string>();
-            connectionSetting2.DataSourceHint = "RaveDB_Reporting";
-
-
-            dynamic expendo = _fixture.Create<ExpandoObject>();
-            expendo.ConnectionSettings = new List<object> {connectionSetting1, connectionSetting2};
-
-            dynamic defaultHint = _fixture.Create<ExpandoObject>();
-            defaultHint.Value = "RaveDB";
-            expendo.DefaultHint = defaultHint;
-            sut.Stub(x => x.ConvertToExpendoObject(raveDataSettingsObject)).Return(expendo);
-
-            var reader = _fixture.Create<IDataReader>();
-            sut.Stub(x => x.GetDataReaderByConnection(null)).IgnoreArguments().Return(reader);
-
-            var list = new List<object> {new {ID = 0, Tag = "Tag0", Value = "Value0"}};
-            sut.Stub(x => x.GetConfigurationInfoFromDb(reader)).IgnoreArguments().Return(list);
-
-            //Act
-            dynamic result = sut.Handler(question);
-
-            //Assert
-            Assert.AreSame(result, list);
+            // Assert
+            Assert.AreSame(expectedDataTable, result);
         }
 
         [TestMethod]
-        public void HandleQuestion_ThrowsExceptionWhenGettingConfigSection()
+        public void CreateDataAdapter_ShouldReturnSqlDataAdapter()
         {
-            //Arrange
-            var question = _fixture.Create<IThermometerQuestion>();
-            var sut = MockRepository.GeneratePartialMock<ConfigurationInfoHandler>();
-            sut.Stub(x => x.GetRaveDataSettingsSectionObject())
-                .Throw(new Exception("Error when reading DataSettings section"));
+            // Arrange
+            var sql = _fixture.Create<string>();
+            var connectionString = "Server=WIN81;Database=RaveDev;uid=RaveDev;pwd=password*8";
 
-            //Act
-            dynamic result = sut.Handler(question);
+            // Act
+            var result = _sut.CreateDataAdapter(sql, connectionString);
 
-            //Assert
-            Assert.IsInstanceOfType(result, typeof (Exception));
-            Assert.AreEqual("Error when reading DataSettings section", result.Message);
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(SqlDataAdapter));
         }
 
         [TestMethod]
-        public void HandleQuestion_NoRecord()
+        public void GetConnectionString_ShouldReturnTheFirstConnectionString()
         {
-            //Arrange
-            var question = _fixture.Create<IThermometerQuestion>();
-            var sut = MockRepository.GeneratePartialMock<ConfigurationInfoHandler>();
+            // Arrange
+            var connectionSettings = _fixture.CreateMany<ExpandoObject>().OfType<dynamic>().ToList();
+            connectionSettings.ForEach(x => x.ConnectionString = _fixture.Create<string>());
+            var dataSettings = new
+            {
+                ConnectionSettings = connectionSettings
+            };
+            _sut.Stub(x => x.GetRaveDataSettingsSectionObject()).Return(dataSettings);
 
-            var raveDataSettingsObject = _fixture.Create<object>();
-            sut.Stub(x => x.GetRaveDataSettingsSectionObject()).Return(raveDataSettingsObject);
+            // Act
+            var result = _sut.GetConnectionString();
 
-            dynamic connectionSetting1 = new ExpandoObject();
-            connectionSetting1.ConnectionString = _fixture.Create<string>();
-            connectionSetting1.DataSourceHint = "RaveDB";
-            dynamic connectionSetting2 = new ExpandoObject();
-            connectionSetting2.ConnectionString = _fixture.Create<string>();
-            connectionSetting2.DataSourceHint = "RaveDB_Reporting";
-
-
-            dynamic expendo = _fixture.Create<ExpandoObject>();
-            expendo.ConnectionSettings = new List<object> {connectionSetting1, connectionSetting2};
-
-            dynamic defaultHint = _fixture.Create<ExpandoObject>();
-            defaultHint.Value = "RaveDB";
-            expendo.DefaultHint = defaultHint;
-            sut.Stub(x => x.ConvertToExpendoObject(raveDataSettingsObject)).Return(expendo);
-
-
-            var reader = _fixture.Create<IDataReader>();
-            sut.Stub(x => x.GetDataReaderByConnection(null)).IgnoreArguments().Return(reader);
-
-            var list = new List<object>();
-            sut.Stub(x => x.GetConfigurationInfoFromDb(reader)).IgnoreArguments().Return(list);
-
-            //Act
-            dynamic result = sut.Handler(question);
-            //Assert
-            //Assert
-            Assert.AreSame(result, list);
-            Assert.AreEqual(0, result.Count);
+            // Assert
+            var firstConnectionString = connectionSettings.Select(x => x.ConnectionString).First();
+            Assert.AreEqual(firstConnectionString, result);
         }
     }
 }
