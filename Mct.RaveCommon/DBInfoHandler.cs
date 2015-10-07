@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
-using System.Dynamic;
 using System.Linq;
 
 namespace Medidata.Cloud.Thermometer.RaveCommon
@@ -15,7 +15,8 @@ namespace Medidata.Cloud.Thermometer.RaveCommon
         {
             var dataSettings = GetRaveDataSettingsSectionObject();
             dynamic expando = dataSettings.ToDynamic();
-            var connectionSettings = ((IEnumerable<object>) expando.ConnectionSettings)
+            var connectionSettings = ((IEnumerable) expando.ConnectionSettings)
+                                    .OfType<object>()
                                     .Select(x => x.ToDynamic());
             foreach (var x in connectionSettings)
             {
