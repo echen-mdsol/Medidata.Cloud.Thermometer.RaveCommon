@@ -12,7 +12,7 @@ namespace Medidata.Cloud.Thermometer.RaveCommon
         protected override object HandleQuestion(IThermometerQuestion question)
         {
             var connectionString = GetConnectionString();
-            const string sql = "SELECT Tag,ConfigValue FROM [dbo].[Configuration] ORDER BY Id";
+            const string sql = "SELECT Tag, ConfigValue FROM [dbo].[Configuration] ORDER BY Id";
             var adapter = CreateDataAdapter(sql, connectionString);
 
             var set = new DataSet();
