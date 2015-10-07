@@ -6,8 +6,6 @@ using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
 using System.Dynamic;
 using System.Linq;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace Medidata.Cloud.Thermometer.RaveCommon
 {
