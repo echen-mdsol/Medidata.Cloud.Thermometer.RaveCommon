@@ -1,5 +1,7 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
+using System.Dynamic;
 using System.Linq;
 
 namespace Medidata.Cloud.Thermometer.RaveCommon
@@ -18,7 +20,8 @@ namespace Medidata.Cloud.Thermometer.RaveCommon
             var set = new DataSet();
             adapter.Fill(set);
 
-            return set.Tables[0];
+            var answer = FlattenToObject(set.Tables[0]);
+            return answer;
         }
 
         internal virtual IDataAdapter CreateDataAdapter(string query, string connectionString)
@@ -30,6 +33,18 @@ namespace Medidata.Cloud.Thermometer.RaveCommon
         {
             var dataSettings = GetRaveDataSettingsSectionObject();
             return dataSettings.ToDynamic().ConnectionSettings[0].ConnectionString;
+        }
+
+        internal virtual object FlattenToObject(DataTable table)
+        {
+            IDictionary<string, object> result = new ExpandoObject();
+            var rows = table.Rows.OfType<DataRow>();
+            foreach (var row in rows)
+            {
+                result.Add(row["Tag"] as string, row["ConfigValue"]);
+            }
+
+            return result;
         }
     }
 }

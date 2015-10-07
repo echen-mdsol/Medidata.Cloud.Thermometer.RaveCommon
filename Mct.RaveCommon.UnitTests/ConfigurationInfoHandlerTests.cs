@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Dynamic;
@@ -6,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Ploeh.AutoFixture;
 using Ploeh.AutoFixture.AutoRhinoMock;
 using Rhino.Mocks;
+using Rhino.Mocks.Interfaces;
 
 namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests
 {
@@ -44,11 +47,14 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests
                 Arg<string>.Is.Same(connectionString)))
                 .Return(adapter);
 
+            var expectedResult = _fixture.Create<object>();
+            _sut.Stub(x => x.FlattenToObject(expectedDataTable)).Return(expectedResult);
+
             // Act
-            var result = _sut.Handler(question) as DataTable;
+            var result = _sut.Handler(question);
 
             // Assert
-            Assert.AreSame(expectedDataTable, result);
+            Assert.AreSame(expectedResult, result);
         }
 
         [TestMethod]
@@ -62,7 +68,7 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests
             var result = _sut.CreateDataAdapter(sql, connectionString);
 
             // Assert
-            Assert.IsInstanceOfType(result, typeof(SqlDataAdapter));
+            Assert.IsInstanceOfType(result, typeof (SqlDataAdapter));
         }
 
         [TestMethod]
@@ -83,6 +89,38 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests
             // Assert
             var firstConnectionString = connectionSettings.Select(x => x.ConnectionString).First();
             Assert.AreEqual(firstConnectionString, result);
+        }
+
+        [TestMethod]
+        public void FlattenToObject_ShouldReturnObject()
+        {
+            // Arrange
+            var table = new DataTable();
+            table.Columns.Add("Tag", typeof (string));
+            table.Columns.Add("ConfigValue", typeof (string));
+
+            var count = new Random().Next(2, 5);
+            for (var i = 0; i < count; i++)
+            {
+                var tag = _fixture.Create<string>();
+                var configValue = _fixture.Create<string>();
+                table.Rows.Add(tag, configValue);
+            }
+
+            // Act
+            var result = _sut.FlattenToObject(table);
+
+            // Assert
+            var dic = result as IDictionary<string, object>;
+            Assert.IsNotNull(dic);
+            Assert.AreEqual(count, dic.Count);
+            foreach (var row in table.Rows.OfType<DataRow>())
+            {
+                var key = row["Tag"] as string;
+                var value = row["ConfigValue"];
+                Assert.IsTrue(dic.ContainsKey(key));
+                Assert.AreEqual(value, dic[key]);
+            }
         }
     }
 }
