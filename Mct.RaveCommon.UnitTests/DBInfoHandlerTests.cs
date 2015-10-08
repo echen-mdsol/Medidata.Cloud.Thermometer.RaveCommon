@@ -71,40 +71,20 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests
             var dbname = _fixture.Create<string>();
             var userid = _fixture.Create<string>();
             var password = _fixture.Create<string>();
-            var connectionString = string.Format("Server={0};Database={1};uid={2};pwd={3}", serverName, dbname, userid,
+            var connectionString = string.Format("Server={0};Database={1};uid={2};pwd={3}",
+                serverName,
+                dbname,
+                userid,
                 password);
             var sut = new DbInfoHandler();
 
             dynamic result = sut.ConvertConnectionStringToObject(connectionString);
             IDictionary<string, object> dic = result;
 
-            Assert.AreEqual(serverName, dic["Data Source"]);
-            Assert.AreEqual(dbname, dic["Initial Catalog"]);
+            Assert.AreEqual(serverName, dic["DataSource"]);
+            Assert.AreEqual(dbname, dic["InitialCatalog"]);
             Assert.IsFalse(dic.ContainsKey("UserID"));
             Assert.IsFalse(dic.ContainsKey("Password"));
-        }
-
-        [TestMethod]
-        public void ConvertToExpendoObject_ReturnsSelfIfAlreadyIsExpendo()
-        {
-            var expected = _fixture.Create<ExpandoObject>();
-            var sut = new DbInfoHandler();
-
-            var result = sut.ConvertToExpendoObject(expected);
-
-            Assert.AreEqual(expected, result);
-        }
-
-        [TestMethod]
-        public void ConvertToExpendoObject_ConvertsObjectToExpendo()
-        {
-            var value = _fixture.Create<string>();
-            var expected = new {x = value};
-            var sut = new DbInfoHandler();
-
-            dynamic result = sut.ConvertToExpendoObject(expected);
-
-            Assert.AreEqual(expected.x, result.x);
         }
 
         [TestMethod]
@@ -113,27 +93,25 @@ namespace Medidata.Cloud.Thermometer.RaveCommon.UnitTests
             var question = _fixture.Create<IThermometerQuestion>();
             var sut = MockRepository.GeneratePartialMock<DbInfoHandler>();
 
-            var raveDataSettingsObject = _fixture.Create<object>();
+            var connectionSetting1 = new {ConnectionString = _fixture.Create<string>()};
+            var connectionSetting2 = new {ConnectionString = _fixture.Create<string>()};
+
+            var raveDataSettingsObject = new
+            {
+                ConnectionSettings = new[] {connectionSetting1, connectionSetting2}
+            };
+
             sut.Stub(x => x.GetRaveDataSettingsSectionObject()).Return(raveDataSettingsObject);
 
-            dynamic connectionSetting1 = new ExpandoObject();
-            connectionSetting1.ConnectionString = _fixture.Create<string>();
-            dynamic connectionSetting2 = new ExpandoObject();
-            connectionSetting2.ConnectionString = _fixture.Create<string>();
+            var connectionState = _fixture.Create<ConnectionState>();
+            sut.Stub(x => x.GetConnectionState(null)).IgnoreArguments().Return(connectionState);
 
-            dynamic expendo = _fixture.Create<ExpandoObject>();
-            expendo.ConnectionSettings = new[] {connectionSetting1, connectionSetting2};
-            sut.Stub(x => x.ConvertToExpendoObject(raveDataSettingsObject)).Return(expendo);
-
-            var connectionState1 = _fixture.Create<ConnectionState>();
-            sut.Stub(x => x.GetConnectionState(null)).IgnoreArguments().Return(connectionState1);
-
-            var connectionObject1 = _fixture.Create<ExpandoObject>();
-            sut.Stub(x => x.ConvertConnectionStringToObject(null)).IgnoreArguments().Return(connectionObject1);
+            var connectionObject = _fixture.Create<ExpandoObject>();
+            sut.Stub(x => x.ConvertConnectionStringToObject(null)).IgnoreArguments().Return(connectionObject);
 
             dynamic result = sut.Handler(question);
 
-            Assert.AreEqual(expendo.ConnectionSettings.Length, result.ConnectionSettings.Length);
+            Assert.AreEqual(raveDataSettingsObject.ConnectionSettings.Length, result.ConnectionSettings.Length);
         }
     }
 }

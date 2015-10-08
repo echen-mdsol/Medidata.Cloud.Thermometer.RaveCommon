@@ -1,12 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
-using System.Dynamic;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using System.Linq;
 
 namespace Medidata.Cloud.Thermometer.RaveCommon
 {
@@ -15,9 +14,11 @@ namespace Medidata.Cloud.Thermometer.RaveCommon
         protected override object HandleQuestion(IThermometerQuestion question)
         {
             var dataSettings = GetRaveDataSettingsSectionObject();
-            dynamic expando = ConvertToExpendoObject(dataSettings);
-            var connectionSettings = (IList<object>) expando.ConnectionSettings;
-            foreach (dynamic x in connectionSettings)
+            dynamic expando = dataSettings.ToDynamic();
+            var connectionSettings = ((IEnumerable) expando.ConnectionSettings)
+                                    .OfType<object>()
+                                    .Select(x => x.ToDynamic());
+            foreach (var x in connectionSettings)
             {
                 x.ConnectionState = GetConnectionState(x.ConnectionString);
                 x.ConnectionString = ConvertConnectionStringToObject(x.ConnectionString);
@@ -32,22 +33,13 @@ namespace Medidata.Cloud.Thermometer.RaveCommon
             return ConfigurationManager.GetSection("DataSettings");
         }
 
-        internal virtual ExpandoObject ConvertToExpendoObject(object target)
-        {
-            var expando = target as ExpandoObject;
-            if (expando != null) return expando;
-            var json = JsonConvert.SerializeObject(target, new StringEnumConverter());
-            expando = JsonConvert.DeserializeObject<ExpandoObject>(json, new ExpandoObjectConverter());
-            return expando;
-        }
-
-        internal virtual ExpandoObject ConvertConnectionStringToObject(string connectionString)
+        internal virtual dynamic ConvertConnectionStringToObject(string connectionString)
         {
             var connectionInfo = new SqlConnectionStringBuilder(connectionString);
-            var obj = ConvertToExpendoObject(connectionInfo);
+            var obj = connectionInfo.ToDynamic();
             IDictionary<string, object> dic = obj;
             dic.Remove("Password");
-            dic.Remove("User ID");
+            dic.Remove("UserID");
             return obj;
         }
 
