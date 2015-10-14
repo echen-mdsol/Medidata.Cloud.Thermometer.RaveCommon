@@ -32,7 +32,7 @@ namespace Medidata.Cloud.Thermometer.RaveCommon
         internal virtual string GetConnectionString()
         {
             var dataSettings = GetRaveDataSettingsSectionObject();
-            return dataSettings.ToDynamic().ConnectionSettings[0].ConnectionString;
+            return dataSettings.ToDynamicJson().ConnectionSettings[0].ConnectionString;
         }
 
         internal virtual object FlattenToObject(DataTable table)

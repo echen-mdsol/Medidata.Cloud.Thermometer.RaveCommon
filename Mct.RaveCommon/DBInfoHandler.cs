@@ -14,15 +14,15 @@ namespace Medidata.Cloud.Thermometer.RaveCommon
         protected override object HandleQuestion(IThermometerQuestion question)
         {
             var dataSettings = GetRaveDataSettingsSectionObject();
-            dynamic expando = dataSettings.ToDynamic();
-            var connectionSettings = ((IEnumerable) expando.ConnectionSettings)
-                                    .OfType<object>()
-                                    .Select(x => x.ToDynamic());
-            foreach (var x in connectionSettings)
-            {
-                x.ConnectionState = GetConnectionState(x.ConnectionString);
-                x.ConnectionString = ConvertConnectionStringToObject(x.ConnectionString);
-            }
+            dynamic expando = dataSettings.ToDynamicJson();
+            expando.ConnectionSettings = ((IEnumerable)expando.ConnectionSettings)
+                .OfType<object>()
+                .Select(x => x.ToDynamicJson())
+                .Select(d => new
+                {
+                    ConnectionState = GetConnectionState(d.ConnectionString),
+                    ConnectionString = ConvertConnectionStringToObject(d.ConnectionString)
+                });
 
             return expando;
         }
@@ -36,10 +36,10 @@ namespace Medidata.Cloud.Thermometer.RaveCommon
         internal virtual dynamic ConvertConnectionStringToObject(string connectionString)
         {
             var connectionInfo = new SqlConnectionStringBuilder(connectionString);
-            var obj = connectionInfo.ToDynamic();
+            var obj = connectionInfo.ToDynamicJson();
             IDictionary<string, object> dic = obj;
             dic.Remove("Password");
-            dic.Remove("UserID");
+            dic.Remove("User ID");
             return obj;
         }
 
