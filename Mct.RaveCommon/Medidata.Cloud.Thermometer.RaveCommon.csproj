@@ -59,6 +59,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -68,6 +69,7 @@
     <Compile Include="DbInfoHandler.cs" />
     <Compile Include="DynamicExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RouteInfoHandler.cs" />
     <Compile Include="StateServiceBaseHandler.cs" />
     <Compile Include="ThermometerConditionalStarter.cs" />
   </ItemGroup>
