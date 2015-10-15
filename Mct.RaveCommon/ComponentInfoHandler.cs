@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -74,7 +75,7 @@ namespace Medidata.Cloud.Thermometer.RaveCommon
                 buildId = GetAssemblyAttributeFirstPropertyValue<AssemblyInformationalVersionAttribute>(componentAssembly),
                 serverName = Environment.MachineName,
                 ipAddress = GetLocalIP(),
-                releaseDir = AppDomain.CurrentDomain.BaseDirectory
+                releaseDir = Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)
             };
         }
     }
