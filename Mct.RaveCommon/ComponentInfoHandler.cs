@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Reflection;
 
 namespace Medidata.Cloud.Thermometer.RaveCommon
@@ -43,6 +45,18 @@ namespace Medidata.Cloud.Thermometer.RaveCommon
             return attribute == null || p == null ? string.Empty : p.GetValue(attribute, null).ToString();
         }
 
+        string GetLocalIP()
+        {
+            try
+            {
+                return String.Join<IPAddress>(",", Dns.GetHostAddresses(Dns.GetHostName()).Where(ip => ip.AddressFamily == AddressFamily.InterNetwork));
+            }
+            catch(Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
         protected override object HandleQuestion(IThermometerQuestion question)
         {
             var componentAssembly = GetComponentAssembly();
@@ -57,7 +71,10 @@ namespace Medidata.Cloud.Thermometer.RaveCommon
                 product = GetAssemblyAttributeFirstPropertyValue<AssemblyProductAttribute>(componentAssembly),
                 component = componentAssembly.GetName().Name,
                 productVersion = GetAssemblyAttributeFirstPropertyValue<AssemblyFileVersionAttribute>(componentAssembly),
-                buildId = GetAssemblyAttributeFirstPropertyValue<AssemblyInformationalVersionAttribute>(componentAssembly)
+                buildId = GetAssemblyAttributeFirstPropertyValue<AssemblyInformationalVersionAttribute>(componentAssembly),
+                serverName = Environment.MachineName,
+                ipAddress = GetLocalIP(),
+                releaseDir = AppDomain.CurrentDomain.BaseDirectory
             };
         }
     }
